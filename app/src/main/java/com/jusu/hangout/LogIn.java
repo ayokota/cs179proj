@@ -24,7 +24,7 @@ public class LogIn extends AppCompatActivity {
 
     public void clickFunction(View view){
 
-        Log.i("Login button", "Enable");
+        Log.i("Login button", "Enable");//recordtest
 
     }
 
