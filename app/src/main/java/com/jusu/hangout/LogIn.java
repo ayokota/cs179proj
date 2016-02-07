@@ -22,6 +22,9 @@ public class LogIn extends AppCompatActivity {
     boolean userName = false;
     boolean userPassword = false;
 
+    String uName = "";
+    String pWord = "";
+
     public void clickFunction(View view){
 
         Log.i("Login button", "Enable");//recordtest
@@ -42,6 +45,7 @@ public class LogIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         EditText userNameInput = (EditText) findViewById(R.id.login_user_edit);
         EditText passwordInput = (EditText) findViewById(R.id.login_passwd_edit);
 
@@ -57,17 +61,23 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (!s.equals("")) {
-                    userName = true;
-                    if (userPassword == true)
-                        logInButton.setEnabled(true);
-
-                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (s.length()>0) {
+                    userName = true;
+                }
+                else
+                    userName = false;
 
+                uName = s.toString();
+                if(userName==true && userPassword==true) {
+                    logInButton.setEnabled(true);
+                } else {
+                    logInButton.setEnabled(false);
+
+                }
             }
         });
 
@@ -80,19 +90,37 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(!s.equals("") ) {
-                    userPassword = true;
-                    if(userName == true)
-                        logInButton.setEnabled(true);
-                }
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (s.length()>0) {
+                    userPassword = true;
+                }
+                else
+                    userPassword = false;
 
+                pWord = s.toString();
+                if(userName==true && userPassword==true) {
+                    logInButton.setEnabled(true);
+                } else {
+                    logInButton.setEnabled(false);
+
+                }
             }
         });
+
+
+
+        logInButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(uName);
+                System.out.println(pWord);
+            }
+        }) ;
+
 
     }
 }
