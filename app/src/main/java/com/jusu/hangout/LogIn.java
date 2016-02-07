@@ -16,7 +16,6 @@ public class LogIn extends AppCompatActivity {
 
     //EditText userNameInput = (EditText) findViewById(R.id.login_user_edit);
     //EditText passwordInput = (EditText) findViewById(R.id.login_passwd_edit);
-
     //Button logInButton = (Button) findViewById(R.id.loginbutton);
 
     boolean userName = false;
@@ -27,7 +26,11 @@ public class LogIn extends AppCompatActivity {
 
     public void clickFunction(View view){
 
-        Log.i("Login button", "Enable");//recordtest
+        System.out.println(uName);
+        System.out.println(pWord);
+        Intent intent = new Intent();
+        intent.setClass(this,MainContent.class);
+        startActivity(intent);
 
     }
 
@@ -65,14 +68,13 @@ public class LogIn extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length()>0) {
+                if (s.length() > 0) {
                     userName = true;
-                }
-                else
+                } else
                     userName = false;
 
                 uName = s.toString();
-                if(userName==true && userPassword==true) {
+                if (userName == true && userPassword == true) {
                     logInButton.setEnabled(true);
                 } else {
                     logInButton.setEnabled(false);
@@ -113,13 +115,16 @@ public class LogIn extends AppCompatActivity {
 
 
 
-        logInButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println(uName);
-                System.out.println(pWord);
-            }
-        }) ;
+//        logInButton.setOnClickListener(new Button.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                    System.out.println(uName);
+//                    System.out.println(pWord);
+//                    Intent intent = new Intent();
+//                    intent.setClass(,MainContent.class);
+//                    startActivity(intent);
+//            }
+//        }) ;
 
 
     }
