@@ -15,6 +15,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -27,13 +28,17 @@ public class MainContent extends AppCompatActivity {
 
     ListView chatListView;
 
+    ImageView tapTab0;
+    ImageView tapTab1;
+    ImageView tapTab2;
+    ImageView tapTab3;
+
+    RelativeLayout chatLayout,contactsLayout,hangOutLayout,meLayout;
+
     public void clickFunction(View view) {
 
         ImageView counter = (ImageView) view;
-        ImageView tapTab0 = (ImageView)findViewById(R.id.img_mainframe);
-        ImageView tapTab1 = (ImageView)findViewById(R.id.img_contacts);
-        ImageView tapTab2 = (ImageView)findViewById(R.id.img_discover);
-        ImageView tapTab3 = (ImageView)findViewById(R.id.img_me);
+
 //        System.out.println(counter.getTag().toString());
         int tappedTag = Integer.parseInt(counter.getTag().toString());
 
@@ -42,21 +47,38 @@ public class MainContent extends AppCompatActivity {
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
             tapTab2.setImageResource(R.mipmap.tabbar_discover);
             tapTab3.setImageResource(R.mipmap.tabbar_me);
+            contactsLayout.setVisibility(View.VISIBLE);
+            chatLayout.setVisibility(View.INVISIBLE);
+            hangOutLayout.setVisibility(View.INVISIBLE);
+            meLayout.setVisibility(View.INVISIBLE);
+
         } else if (tappedTag ==2) {
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
             tapTab3.setImageResource(R.mipmap.tabbar_me);
+            hangOutLayout.setVisibility(View.VISIBLE);
+            contactsLayout.setVisibility(View.INVISIBLE);
+            chatLayout.setVisibility(View.INVISIBLE);
+            meLayout.setVisibility(View.INVISIBLE);
         } else if (tappedTag ==3) {
             tapTab3.setImageResource(R.mipmap.tabbar_me_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
             tapTab2.setImageResource(R.mipmap.tabbar_discover);
+            meLayout.setVisibility(View.VISIBLE);
+            hangOutLayout.setVisibility(View.INVISIBLE);
+            contactsLayout.setVisibility(View.INVISIBLE);
+            chatLayout.setVisibility(View.INVISIBLE);
         } else {
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab2.setImageResource(R.mipmap.tabbar_discover);
             tapTab3.setImageResource(R.mipmap.tabbar_me);
+            chatLayout.setVisibility(View.VISIBLE);
+            meLayout.setVisibility(View.INVISIBLE);
+            hangOutLayout.setVisibility(View.INVISIBLE);
+            contactsLayout.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -64,6 +86,17 @@ public class MainContent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maincontent);
+
+        tapTab0 = (ImageView)findViewById(R.id.img_mainframe);
+        tapTab1 = (ImageView)findViewById(R.id.img_contacts);
+        tapTab2 = (ImageView)findViewById(R.id.img_discover);
+        tapTab3 = (ImageView)findViewById(R.id.img_me);
+
+        chatLayout = (RelativeLayout) findViewById(R.id.chatLayout);
+        contactsLayout = (RelativeLayout) findViewById(R.id.contactsLayout);
+        hangOutLayout = (RelativeLayout) findViewById(R.id.hangOutLayout);
+        meLayout = (RelativeLayout) findViewById(R.id.meLayout);
+
 
         chatListView = (ListView) findViewById(R.id.chatListView);
 

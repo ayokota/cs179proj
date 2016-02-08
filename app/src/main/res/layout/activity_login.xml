@@ -53,7 +53,7 @@
             android:layout_marginRight="20dp"
             android:singleLine="true"
             android:background="@drawable/underline"
-            android:hint="QQ号/微信号/手机号（请输入buaa）"
+            android:hint="HangOut ID/Email"
             android:alpha="0.5" />
 
         <EditText
@@ -69,7 +69,7 @@
             android:background="@drawable/underline"
             android:password="true"
             android:singleLine="true"
-            android:hint="密码(请输入123)"
+            android:hint="Password"
             android:inputType="textPassword"
             android:alpha="0.5" />
 

@@ -175,6 +175,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="This is contacts page"
+            android:id="@+id/textView3"
+            android:textSize="50sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -186,7 +194,15 @@
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/hangOutLayout"
-        android:visibility="invisible" />
+        android:visibility="invisible" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is finding new friends page"
+            android:id="@+id/textView4"
+            android:textSize="50sp" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -197,6 +213,15 @@
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/meLayout"
-        android:visibility="invisible" />
+        android:visibility="invisible" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="This is App setting pages"
+            android:id="@+id/textView5"
+            android:textSize="50sp" />
+    </RelativeLayout>
 
 </RelativeLayout>
