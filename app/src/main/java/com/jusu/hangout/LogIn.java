@@ -14,11 +14,15 @@ import android.widget.EditText;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class LogIn extends AppCompatActivity {
 
@@ -133,55 +137,66 @@ public class LogIn extends AppCompatActivity {
                 System.out.println(uName);
                 System.out.println(pWord);
 
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", uName);
+                params.put("password", pWord);
+                final String json = new Gson().toJson(params);
                 new Thread(new Runnable() {
                     public void run() {
                         try {
-                            sendGet("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/chatService");
+                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/userAuthentication",json);
+                            if (result.equals("0")) {
+                                return;
+                            } else if(result.equals("1")) {
+                                Intent intent = new Intent(LogIn.this, MainContent.class);
+//                    intent.setClass(,MainContent.class);
+                                startActivity(intent);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }).start();
-//                    Intent intent = new Intent();
-//                    intent.setClass(,MainContent.class);
-//                    startActivity(intent);
+//                Intent intent = new Intent(LogIn.this, MainContent.class);
+////                    intent.setClass(,MainContent.class);
+//                startActivity(intent);
             }
         });
     }
-
-    private void sendGet(String url) throws Exception {
-
-        try {
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-            // optional default is GET
-            con.setRequestMethod("GET");
-
-            //add request header
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-            int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
-
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            //print result
-            System.out.println(response.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+//
+//    private void sendGet(String url) throws Exception {
+//
+//        try {
+//            URL obj = new URL(url);
+//            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+//
+//            // optional default is GET
+//            con.setRequestMethod("GET");
+//
+//            //add request header
+//            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+//
+//            int responseCode = con.getResponseCode();
+//            System.out.println("\nSending 'GET' request to URL : " + url);
+//            System.out.println("Response Code : " + responseCode);
+//
+//            BufferedReader in = new BufferedReader(
+//                    new InputStreamReader(con.getInputStream()));
+//            String inputLine;
+//            StringBuffer response = new StringBuffer();
+//
+//            while ((inputLine = in.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            in.close();
+//
+//            //print result
+//            System.out.println(response.toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 
 }
