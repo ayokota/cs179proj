@@ -11,6 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class LogIn extends AppCompatActivity {
 
 
@@ -23,20 +36,25 @@ public class LogIn extends AppCompatActivity {
 
     String uName = "";
     String pWord = "";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
-    public void clickFunction(View view){
+    public void clickFunction(View view) {
 
         System.out.println(uName);
         System.out.println(pWord);
         Intent intent = new Intent();
-        intent.setClass(this,MainContent.class);
+        intent.setClass(this, MainContent.class);
         startActivity(intent);
 
     }
 
     public void returnBack(View view) {
         Intent intent = new Intent();
-        intent.setClass(this,LoginPage.class);
+        intent.setClass(this, LoginPage.class);
         //Log.i("Login page", "finish");
         startActivity(intent);
 
@@ -97,14 +115,13 @@ public class LogIn extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length()>0) {
+                if (s.length() > 0) {
                     userPassword = true;
-                }
-                else
+                } else
                     userPassword = false;
 
                 pWord = s.toString();
-                if(userName==true && userPassword==true) {
+                if (userName == true && userPassword == true) {
                     logInButton.setEnabled(true);
                 } else {
                     logInButton.setEnabled(false);
@@ -114,18 +131,72 @@ public class LogIn extends AppCompatActivity {
         });
 
 
+        logInButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(uName);
+                System.out.println(pWord);
 
-//        logInButton.setOnClickListener(new Button.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                    System.out.println(uName);
-//                    System.out.println(pWord);
-//                    Intent intent = new Intent();
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", uName);
+                params.put("password", pWord);
+                final String json = new Gson().toJson(params);
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/userAuthentication",json);
+                            if (result.equals("0")) {
+                                return;
+                            } else if(result.equals("1")) {
+                                Intent intent = new Intent(LogIn.this, MainContent.class);
 //                    intent.setClass(,MainContent.class);
-//                    startActivity(intent);
-//            }
-//        }) ;
-
-
+                                startActivity(intent);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+//                Intent intent = new Intent(LogIn.this, MainContent.class);
+////                    intent.setClass(,MainContent.class);
+//                startActivity(intent);
+            }
+        });
     }
+//
+//    private void sendGet(String url) throws Exception {
+//
+//        try {
+//            URL obj = new URL(url);
+//            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+//
+//            // optional default is GET
+//            con.setRequestMethod("GET");
+//
+//            //add request header
+//            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+//
+//            int responseCode = con.getResponseCode();
+//            System.out.println("\nSending 'GET' request to URL : " + url);
+//            System.out.println("Response Code : " + responseCode);
+//
+//            BufferedReader in = new BufferedReader(
+//                    new InputStreamReader(con.getInputStream()));
+//            String inputLine;
+//            StringBuffer response = new StringBuffer();
+//
+//            while ((inputLine = in.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            in.close();
+//
+//            //print result
+//            System.out.println(response.toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+
+
 }
