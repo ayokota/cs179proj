@@ -64,6 +64,13 @@ public class LogIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /***************************************************************/
+        Intent intent = new Intent(LogIn.this, MainContent.class);      //just for test, delete in later version.
+        startActivity(intent);
+        /***************************************************************/
+
+
         setContentView(R.layout.activity_login);
 
 
@@ -152,6 +159,7 @@ public class LogIn extends AppCompatActivity {
 //                    intent.setClass(,MainContent.class);
                                 startActivity(intent);
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

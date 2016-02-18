@@ -1,6 +1,8 @@
 package com.jusu.hangout;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.session.PlaybackState;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,6 +38,8 @@ public class MainContent extends AppCompatActivity {
 
     RelativeLayout chatLayout,contactsLayout,hangOutLayout,meLayout;
 
+    ArrayList<HashMap<String, Object>> hashData;
+
     public void clickFunction(View view) {
 
         ImageView counter = (ImageView) view;
@@ -53,6 +58,11 @@ public class MainContent extends AppCompatActivity {
             meLayout.setVisibility(View.INVISIBLE);
 
         } else if (tappedTag ==2) {
+
+            Intent intent = new Intent(MainContent.this, LocationBroadcastActivity.class);
+
+            startActivity(intent);
+
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -100,9 +110,24 @@ public class MainContent extends AppCompatActivity {
 
         chatListView = (ListView) findViewById(R.id.chatListView);
 
-        CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
+        final CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
 
         chatListView.setAdapter(customSimpleAdapter);
+
+        chatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Log.i("ID: ", String.valueOf(hashData.get(position).get("id")));
+                Intent intent = new Intent(MainContent.this, ChatPage.class);
+
+                intent.putExtra("numberid", String.valueOf(hashData.get(position).get("id")));
+
+                intent.putExtra("name", String.valueOf(hashData.get(position).get("name")));
+
+                startActivity(intent);
+            }
+        });
+
 
     }
     // Define a Adapter by myself
@@ -139,19 +164,27 @@ public class MainContent extends AppCompatActivity {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
             View layoutView = layoutInflater.inflate(layoutResource, null);
+
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.picture = (ImageView) layoutView
-                    .findViewById(R.id.imageViewLayout);
+
+            viewHolder.picture = (ImageView) layoutView.findViewById(R.id.imageViewLayout);
+
             viewHolder.number = (TextView) layoutView.findViewById(R.id.number);
 
             viewHolder.name = (TextView) layoutView.findViewById(R.id.name);
-            viewHolder.picture.setImageResource(Integer.parseInt(data.get(
-                    position).get("imageView").toString()));
+
+            viewHolder.picture.setImageResource(Integer.parseInt(data.get(position).get("imageView").toString()));
+
             viewHolder.number.setText(data.get(position).get("id").toString());
+
             Log.e("id", data.get(position).get("name").toString());
+
             viewHolder.name.setText(data.get(position).get("name").toString());
+
             return layoutView;
         }
     }
@@ -159,10 +192,10 @@ public class MainContent extends AppCompatActivity {
     //binding the data and images use the custom adapter defined by myself
 
     private ArrayList<HashMap<String, Object>> getHashMapData() {
-        ArrayList<HashMap<String, Object>> hashData = new ArrayList<HashMap<String, Object>>();
+        hashData = new ArrayList<HashMap<String, Object>>();
         for (int i = 0; i < 4; i++) {
             HashMap<String, Object> mItem = new HashMap<String, Object>();
-            mItem.put("id", "Number：" + i);
+            mItem.put("id", "Number" + i);
             mItem.put("name", "Name" + i);
             switch (i % 5) {
                 case 0:
