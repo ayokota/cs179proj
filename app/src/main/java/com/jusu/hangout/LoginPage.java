@@ -23,12 +23,12 @@ public class LoginPage extends AppCompatActivity {
 
         //this.finish();
     }
-    /*public void welcome_register(View v) {
+    public void SignUp(View v) {
         Intent intent = new Intent();
-        intent.setClass(this, MainWeixin.class);
+        intent.setClass(this, SignUp.class);
         startActivity(intent);
         //this.finish();
-    }*/
+    }
 
 
 }

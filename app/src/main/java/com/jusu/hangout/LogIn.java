@@ -141,8 +141,8 @@ public class LogIn extends AppCompatActivity {
         logInButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(uName);
-                System.out.println(pWord);
+//                System.out.println(uName);
+//                System.out.println(pWord);
 
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", uName);

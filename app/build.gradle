@@ -26,4 +26,5 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.google.code.gson:gson:2.5'
+    compile 'com.google.android.gms:play-services:8.4.0'
 }

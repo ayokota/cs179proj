@@ -36,6 +36,8 @@
         android:id="@+id/singupbutton"
         android:layout_alignBottom="@+id/loginbutton"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="SignUp" />
+
 
 </RelativeLayout>
