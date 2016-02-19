@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -29,17 +32,20 @@ public class SignUp extends AppCompatActivity {
 
     String username = "";
     String password = "";
-    String repassword = "";
+//    String repassword = "";
     String fullname = "";
     String sex = "";
-    String birthdate = "";
+//    String birthdate = "";
 
     boolean usernameBool = false;
     boolean passwordBool = false;
     boolean repasswordBool = false;
     boolean fullnameBool = false;
     boolean sexBool = false;
-    boolean birthdateBool = false;
+//    boolean birthdateBool = false;
+
+
+    boolean passwordDisplayFlag = false;
 
     private RadioGroup sexInput;
     private RadioButton radioSexButton;
@@ -51,23 +57,35 @@ public class SignUp extends AppCompatActivity {
     private GoogleApiClient client;
 
 
+    public void returnBack(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, LoginPage.class);
+        //Log.i("Login page", "finish");
+        startActivity(intent);
+    }
 
     private boolean canSubmit() {
-        return usernameBool && passwordBool && repasswordBool &&
-                fullnameBool && sexBool;
+        return usernameBool && passwordBool && fullnameBool && sexBool;
     }
+
+//    private boolean canSubmit() {
+//        return usernameBool && passwordBool && repasswordBool &&
+//                fullnameBool && sexBool;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        EditText usernameInput = (EditText) findViewById(R.id.username);
-        EditText passwordInput = (EditText) findViewById(R.id.password);
-        EditText repasswordInput = (EditText) findViewById(R.id.repassword);
+        final EditText usernameInput = (EditText) findViewById(R.id.username);
+        final EditText passwordInput = (EditText) findViewById(R.id.password);
+//        EditText repasswordInput = (EditText) findViewById(R.id.repassword);
         EditText fullnameInput = (EditText) findViewById(R.id.fullname);
 
         final Button submitButton = (Button) findViewById(R.id.submit);
+
+        final ImageButton passwordVisibleButton = (ImageButton) findViewById(R.id.pwVisibleButton);
 
         submitButton.setEnabled(false);
 
@@ -83,6 +101,8 @@ public class SignUp extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "m", Toast.LENGTH_SHORT).show();
                     sex = "m";
                     sexBool = true;
+                    maleInput.setTextColor(0xFF000000);
+                    femaleInput.setTextColor(0xFFA6B1C8);
                     if (canSubmit()) {
                         submitButton.setEnabled(true);
                     } else {
@@ -92,6 +112,8 @@ public class SignUp extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "f", Toast.LENGTH_SHORT).show();
                     sex = "f";
                     sexBool = true;
+                    maleInput.setTextColor(0xFFA6B1C8);
+                    femaleInput.setTextColor(0xFF000000);
                     if (canSubmit()) {
                         submitButton.setEnabled(true);
                     } else {
@@ -104,6 +126,24 @@ public class SignUp extends AppCompatActivity {
         /*-------- sex radio button group ---------*/
 
 
+        /*------- show/hide password button -------*/
+
+
+        passwordVisibleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!passwordDisplayFlag) {
+                    passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    passwordVisibleButton.setImageDrawable(getResources().getDrawable(R.drawable.password_show));
+                } else {
+                    passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    passwordVisibleButton.setImageDrawable(getResources().getDrawable(R.drawable.password_hide));
+                }
+                passwordDisplayFlag = !passwordDisplayFlag;
+                passwordInput.postInvalidate();
+            }
+        });
+        /*------- show/hide password button -------*/
 
 
 
@@ -159,30 +199,30 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-        repasswordInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    repasswordBool = true;
-                } else
-                    repasswordBool = false;
-
-                repassword = s.toString();
-                if (canSubmit()) {
-                    submitButton.setEnabled(true);
-                } else {
-                    submitButton.setEnabled(false);
-                }
-            }
-        });
+//        repasswordInput.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (s.length() > 0) {
+//                    repasswordBool = true;
+//                } else
+//                    repasswordBool = false;
+//
+//                repassword = s.toString();
+//                if (canSubmit()) {
+//                    submitButton.setEnabled(true);
+//                } else {
+//                    submitButton.setEnabled(false);
+//                }
+//            }
+//        });
 
         fullnameInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -223,7 +263,7 @@ public class SignUp extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", username);
                 params.put("password", password);
-                params.put("repassword", repassword);
+//                params.put("repassword", repassword);
                 params.put("fullname", fullname);
                 params.put("sex", sex);
 
