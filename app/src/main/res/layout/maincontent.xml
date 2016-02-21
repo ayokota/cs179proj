@@ -219,9 +219,74 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="This is App setting pages"
-            android:id="@+id/textView5"
-            android:textSize="50sp" />
+            android:text="Username"
+            android:id="@+id/username"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="25dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Full Name:"
+            android:id="@+id/fullname"
+            android:layout_below="@+id/username"
+            android:layout_alignLeft="@+id/username"
+            android:layout_alignStart="@+id/username"
+            android:layout_marginTop="27dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="value"
+            android:id="@+id/fullnameValue"
+            android:layout_alignBottom="@+id/fullname"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Sex:"
+            android:id="@+id/sex"
+            android:layout_marginTop="27dp"
+            android:layout_below="@+id/fullname"
+            android:layout_alignLeft="@+id/fullname"
+            android:layout_alignStart="@+id/fullname" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="value"
+            android:id="@+id/sexValue"
+            android:layout_alignTop="@+id/sex"
+            android:layout_alignLeft="@+id/fullnameValue"
+            android:layout_alignStart="@+id/fullnameValue" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Password"
+            android:id="@+id/changePass"
+            android:layout_below="@+id/sex"
+            android:layout_alignLeft="@+id/sex"
+            android:layout_alignStart="@+id/sex"
+            android:layout_marginTop="41dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Profile"
+            android:id="@+id/changeProf"
+            android:layout_below="@+id/changePass"
+            android:layout_alignLeft="@+id/changePass"
+            android:layout_alignStart="@+id/changePass" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,7 +34,7 @@ public class MainContent extends AppCompatActivity {
     ImageView tapTab2;
     ImageView tapTab3;
 
-    RelativeLayout chatLayout,contactsLayout,hangOutLayout,meLayout;
+    RelativeLayout chatLayout, contactsLayout, hangOutLayout, meLayout;
 
     public void clickFunction(View view) {
 
@@ -52,7 +53,7 @@ public class MainContent extends AppCompatActivity {
             hangOutLayout.setVisibility(View.INVISIBLE);
             meLayout.setVisibility(View.INVISIBLE);
 
-        } else if (tappedTag ==2) {
+        } else if (tappedTag == 2) {
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -61,7 +62,7 @@ public class MainContent extends AppCompatActivity {
             contactsLayout.setVisibility(View.INVISIBLE);
             chatLayout.setVisibility(View.INVISIBLE);
             meLayout.setVisibility(View.INVISIBLE);
-        } else if (tappedTag ==3) {
+        } else if (tappedTag == 3) {
             tapTab3.setImageResource(R.mipmap.tabbar_me_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -87,10 +88,10 @@ public class MainContent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maincontent);
 
-        tapTab0 = (ImageView)findViewById(R.id.img_mainframe);
-        tapTab1 = (ImageView)findViewById(R.id.img_contacts);
-        tapTab2 = (ImageView)findViewById(R.id.img_discover);
-        tapTab3 = (ImageView)findViewById(R.id.img_me);
+        tapTab0 = (ImageView) findViewById(R.id.img_mainframe);
+        tapTab1 = (ImageView) findViewById(R.id.img_contacts);
+        tapTab2 = (ImageView) findViewById(R.id.img_discover);
+        tapTab3 = (ImageView) findViewById(R.id.img_me);
 
         chatLayout = (RelativeLayout) findViewById(R.id.chatLayout);
         contactsLayout = (RelativeLayout) findViewById(R.id.contactsLayout);
@@ -100,22 +101,31 @@ public class MainContent extends AppCompatActivity {
 
         chatListView = (ListView) findViewById(R.id.chatListView);
 
-        CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
+        CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter(MainContent.this, getHashMapData(), R.layout.custom_list_layout);
 
         chatListView.setAdapter(customSimpleAdapter);
 
+
+
+        /*------------ meLayout--------------*/
+
+        //EditText username = (EditText) findViewById(R.id.username);
+        System.out.println("debug");
+
+        /*------------ meLayout--------------*/
     }
+
     // Define a Adapter by myself
     private class CustomSimpleAdapter extends SimpleAdapter {
         private Context context;
         private ArrayList<HashMap<String, Object>> data;
         private int layoutResource;
 
-         //@param context
-         //@param data
-         //@param resource
-         //@param from
-         //@param to 构造函数
+        //@param context
+        //@param data
+        //@param resource
+        //@param from
+        //@param to 构造函数
 
         public CustomSimpleAdapter(Context context,
                                    ArrayList<HashMap<String, Object>> data, int resource) {
