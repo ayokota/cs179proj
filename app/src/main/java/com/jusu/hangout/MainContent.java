@@ -2,6 +2,9 @@ package com.jusu.hangout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.session.PlaybackState;
 import android.support.v4.view.ViewPager;
@@ -31,15 +34,12 @@ public class MainContent extends AppCompatActivity {
 
     ListView chatListView;
 
-
-    String username = "";
-
     ImageView tapTab0;
     ImageView tapTab1;
     ImageView tapTab2;
     ImageView tapTab3;
 
-    TextView changeFullName, changePassword;
+    TextView changeFullName, changePassword,userName,fullName;
 
 
     RelativeLayout chatLayout, contactsLayout, hangOutLayout, meLayout;
@@ -68,8 +68,6 @@ public class MainContent extends AppCompatActivity {
             Intent intent = new Intent(MainContent.this, LocationBroadcastActivity.class);
 
             startActivity(intent);
-
-        } else if (tappedTag == 2) {
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -78,6 +76,7 @@ public class MainContent extends AppCompatActivity {
             contactsLayout.setVisibility(View.INVISIBLE);
             chatLayout.setVisibility(View.INVISIBLE);
             meLayout.setVisibility(View.INVISIBLE);
+            finish();
         } else if (tappedTag ==3) {
             tapTab3.setImageResource(R.mipmap.tabbar_me_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
@@ -102,26 +101,43 @@ public class MainContent extends AppCompatActivity {
     public void changeAccountPassword(View view) {
         Intent intent = new Intent(MainContent.this, AccountSettings.class);
         intent.putExtra("settings", "password");
-        intent.putExtra("username",username);
         startActivity(intent);
+        finish();
     }
 
     public void changUserFullName(View view) {
         Intent intent = new Intent(MainContent.this, AccountSettings.class);
         intent.putExtra("settings", "fullname");
-        intent.putExtra("username",username);
         startActivity(intent);
+        finish();
     }
 
+    public void logOut (View view) {
+
+        SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+
+        accountInfo.edit().putString("username", "").apply();        //CLean up user info
+        accountInfo.edit().putString("password", "").apply();
+        accountInfo.edit().putString("fullname", "").apply();
+        accountInfo.edit().putString("sex", "").apply();
+
+        Intent intent = new Intent(MainContent.this, LoginPage.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maincontent);
 
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+//        String username = accountInfo.getString("username", "");                                                   //get account info in local storage
+        userName = (TextView) findViewById(R.id.userNameTextView);
+        fullName = (TextView) findViewById(R.id.fullNameTextView);
+        userName.setText("username: " + accountInfo.getString("username", ""));
+        fullName.setText(accountInfo.getString("fullname", ""));                //this has logic error, we need get the fullname from server
 
-        Intent i = getIntent();
-        username = i.getStringExtra("settings");
 
         tapTab0 = (ImageView)findViewById(R.id.img_mainframe);
         tapTab1 = (ImageView)findViewById(R.id.img_contacts);
@@ -140,8 +156,20 @@ public class MainContent extends AppCompatActivity {
 
         changePassword = (TextView) findViewById(R.id.changepassword);
 
+        if (accountInfo.getString("fromsetting", "").equals("true") == true) {
+                tapTab3.setImageResource(R.mipmap.tabbar_me_hl);
+                tapTab1.setImageResource(R.mipmap.tabbar_contacts);
+                tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
+                tapTab2.setImageResource(R.mipmap.tabbar_discover);
+                meLayout.setVisibility(View.VISIBLE);
+                hangOutLayout.setVisibility(View.INVISIBLE);
+                contactsLayout.setVisibility(View.INVISIBLE);
+                chatLayout.setVisibility(View.INVISIBLE);
+                accountInfo.edit().putString("fromsetting", "").apply();
+        }
 
-        CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
+
+        final CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
 
         chatListView.setAdapter(customSimpleAdapter);
 
@@ -150,19 +178,35 @@ public class MainContent extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Log.i("ID: ", String.valueOf(hashData.get(position).get("id")));
                 Intent intent = new Intent(MainContent.this, ChatPage.class);
-
                 intent.putExtra("numberid", String.valueOf(hashData.get(position).get("id")));
-
                 intent.putExtra("name", String.valueOf(hashData.get(position).get("name")));
-
                 startActivity(intent);
+                finish();
             }
         });
+
+//        chatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //Log.i("ID: ", String.valueOf(hashData.get(position).get("id")));
+//
+//                Log.i("id",String.valueOf(hashData.get(position).get("id")));
+//
+//                Intent intent = new Intent(MainContent.this, ChatPage.class);
+//
+////                intent.putExtra("numberid", (hashData.get(position).get("id")).toString());
+//
+//
+////                intent.putExtra("name", (hashData.get(position).get("name")).toString());
+//
+//                startActivity(intent);
+//            }
+//        });
 
 
 //        customSimpleAdapter = new CustomSimpleAdapter(MainContent.this, getHashMapData(), R.layout.custom_list_layout);
 
-        chatListView.setAdapter(customSimpleAdapter);
+//        chatListView.setAdapter(customSimpleAdapter);
 
 
 
@@ -180,11 +224,11 @@ public class MainContent extends AppCompatActivity {
         private ArrayList<HashMap<String, Object>> data;
         private int layoutResource;
 
-         //@param context
-         //@param data
-         //@param resource
-         //@param from
-         //@param to 构造函数
+        //@param context
+        //@param data
+        //@param resource
+        //@param from
+        //@param to 构造函数
 
         public CustomSimpleAdapter(Context context,
                                    ArrayList<HashMap<String, Object>> data, int resource) {
@@ -211,13 +255,11 @@ public class MainContent extends AppCompatActivity {
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View layoutView = layoutInflater.inflate(layoutResource, null);
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.picture = (ImageView) layoutView
-                    .findViewById(R.id.imageViewLayout);
+            viewHolder.picture = (ImageView) layoutView.findViewById(R.id.imageViewLayout);
             viewHolder.number = (TextView) layoutView.findViewById(R.id.number);
 
             viewHolder.name = (TextView) layoutView.findViewById(R.id.name);
-            viewHolder.picture.setImageResource(Integer.parseInt(data.get(
-                    position).get("imageView").toString()));
+            viewHolder.picture.setImageResource(Integer.parseInt(data.get(position).get("imageView").toString()));
             viewHolder.number.setText(data.get(position).get("id").toString());
             Log.e("id", data.get(position).get("name").toString());
             viewHolder.name.setText(data.get(position).get("name").toString());
@@ -228,7 +270,7 @@ public class MainContent extends AppCompatActivity {
     //binding the data and images use the custom adapter defined by myself
 
     private ArrayList<HashMap<String, Object>> getHashMapData() {
-        ArrayList<HashMap<String, Object>> hashData = new ArrayList<HashMap<String, Object>>();
+        hashData = new ArrayList<HashMap<String, Object>>();
         for (int i = 0; i < 4; i++) {
             HashMap<String, Object> mItem = new HashMap<String, Object>();
             mItem.put("id", "Number：" + i);
@@ -259,4 +301,10 @@ public class MainContent extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setContentView(R.layout.view_null);
+        Log.i("onDestroy","!!!!!!!!!!!!");
+    }
 }

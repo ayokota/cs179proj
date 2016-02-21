@@ -1,6 +1,8 @@
 package com.jusu.hangout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,6 +77,9 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+
 
         final EditText usernameInput = (EditText) findViewById(R.id.username);
         final EditText passwordInput = (EditText) findViewById(R.id.password);
@@ -278,8 +284,15 @@ public class SignUp extends AppCompatActivity {
                                 //someshit went wrong
                                 return;
                             } else if(result.equals("1")) {
+                                /************storage the log in account info on local:start****************/
+                                accountInfo.edit().putString("username", username).apply();        //username
+                                accountInfo.edit().putString("password", password).apply();        //password
+                                accountInfo.edit().putString("fullname", fullname).apply();        //fullname
+                                accountInfo.edit().putString("sex", sex).apply();                  //sex
+                                /************storage the log in account info on local:end******************/
                                 Intent intent = new Intent(SignUp.this, LoginPage.class);
                                 startActivity(intent);
+                                finish();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -331,5 +344,12 @@ public class SignUp extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setContentView(R.layout.view_null);
+        Log.i("onDestroy", "!!!!!!!!!!!!");
     }
 }

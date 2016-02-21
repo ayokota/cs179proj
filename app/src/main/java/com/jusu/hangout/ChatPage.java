@@ -62,6 +62,7 @@ public class ChatPage extends AppCompatActivity {
         intent.setClass(this, MainContent.class);
         //Log.i("Login page", "finish");
         startActivity(intent);
+        finish();
     }
 
     public void mapFunction(View view){
@@ -126,5 +127,12 @@ public class ChatPage extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setContentView(R.layout.view_null);
+        Log.i("onDestroy","!!!!!!!!!!!!");
     }
 }

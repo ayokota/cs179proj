@@ -1,19 +1,27 @@
 package com.jusu.hangout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -37,6 +45,7 @@ public class AccountSettings extends AppCompatActivity {
     String oldpassword = "";
     String newpassword = "";
     String repassword = "";
+    String oldfullname = "";
     String newfullname = "";
 
     private GoogleApiClient client;
@@ -51,14 +60,53 @@ public class AccountSettings extends AppCompatActivity {
     public void returnBack(View view) {
         Intent intent = new Intent();
         intent.setClass(this, MainContent.class);
-        //Log.i("Login page", "finish");
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //To load and update the account info
+        accountInfo.edit().putString("fromsetting", "true").apply();
         startActivity(intent);
+        finish();
     }
+
+    /**************Handler update UI:start********************/
+    void midToast(String str, int showTime)
+    {
+        Toast toast = Toast.makeText(getApplicationContext(), str, showTime);
+        toast.setGravity(Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);  //set display location
+        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        v.setTextColor(Color.parseColor("#5c81c7"));     //set font color
+        toast.show();
+    }
+
+    private Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    //Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_SHORT).show();
+                    midToast("Update failure!", Toast.LENGTH_LONG);
+                    break;
+                case 1:
+                    //Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_SHORT).show();
+                    midToast("Password has updated. Please re log in!", Toast.LENGTH_LONG);
+                    break;
+                case 2:
+                    //Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_SHORT).show();
+                    midToast("Full name has updated!", Toast.LENGTH_SHORT);
+                    break;
+            }
+        }
+    };
+    /**************Handler update UI:end********************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
+
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //To load and update the account info
+
+        username = accountInfo.getString("username", "");
+        oldfullname = accountInfo.getString("fullname", "");
 
         TextView settingsTitle = (TextView) findViewById(R.id.settingsTitle);
 
@@ -70,25 +118,27 @@ public class AccountSettings extends AppCompatActivity {
         final EditText reNewPassword = (EditText) findViewById(R.id.reNewPassword);
         final EditText newFullName = (EditText) findViewById(R.id.newFullName);
 
+        final TextView currentFullName = (TextView) findViewById(R.id.currentFullName);
 
         final Button passwordSubmitButton = (Button) findViewById(R.id.passwordsubmit);
 
         final Button fullNameSubmitButton = (Button) findViewById(R.id.fullnamesubmit);
 
-
         final ImageButton passwordVisibleButton = (ImageButton) findViewById(R.id.passwordVisibleButton);
 
+        passwordSubmitButton.setEnabled(false);
+        fullNameSubmitButton.setEnabled(false);
 
         Intent i = getIntent();
         settingsTitle.setText("Change" + i.getStringExtra("settings"));
-        username = i.getStringExtra("username");
 
-        if(i.getStringExtra("settings") == "password") {
+        if(i.getStringExtra("settings").equals("password") == true) {
 
 
             passwordLayout.setVisibility(View.VISIBLE);
             fullNameLayout.setVisibility(View.INVISIBLE);
         } else {
+            currentFullName.setText("Current full name: "+ oldfullname);
             passwordLayout.setVisibility(View.INVISIBLE);
             fullNameLayout.setVisibility(View.VISIBLE);
         }
@@ -187,6 +237,7 @@ public class AccountSettings extends AppCompatActivity {
         });
 
                 /******************* Change Full user name **********************/
+
         newFullName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -222,7 +273,7 @@ public class AccountSettings extends AppCompatActivity {
 //                System.out.println(birthdate);
 
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("username", "owen");
+                params.put("username", username);
                 params.put("newpassword", newpassword);
 //                params.put("repassword", repassword);
                 params.put("oldpasword", oldpassword);
@@ -235,11 +286,19 @@ public class AccountSettings extends AppCompatActivity {
                             String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/profUpdate", json);
                             System.out.println(result);
                             if (result.equals("0")) {
+                                Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+                                message.what = 0;
+                                handler.sendMessage(message);
                                 //someshit went wrong
                                 return;
                             } else if (result.equals("1")) {
+                                accountInfo.edit().putString("password", newpassword).apply();        //update new password into local storage
+                                Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+                                message.what = 1;
+                                handler.sendMessage(message);
                                 Intent intent = new Intent(AccountSettings.this, LoginPage.class);
                                 startActivity(intent);
+                                finish();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -269,11 +328,21 @@ public class AccountSettings extends AppCompatActivity {
                             String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/profUpdate",json);
                             System.out.println(result);
                             if (result.equals("0")) {
+                                Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+                                message.what = 0;
+                                handler.sendMessage(message);
                                 //someshit went wrong
                                 return;
                             } else if(result.equals("1")) {
-//                                Intent intent = new Intent(AccountSettings.this, LoginPage.class);
-//                                startActivity(intent);
+                                accountInfo.edit().putString("fullname", newfullname).apply();        //update new fullname into local storage
+//                                currentFullName.setText("Current full name: "+ newfullname);
+                                Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+                                message.what = 2;
+                                handler.sendMessage(message);
+                                Intent intent = new Intent(AccountSettings.this, MainContent.class);
+                                accountInfo.edit().putString("fromsetting", "true").apply();
+                                startActivity(intent);
+                                finish();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -328,6 +397,13 @@ public class AccountSettings extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setContentView(R.layout.view_null);
+        Log.i("onDestroy", "!!!!!!!!!!!!");
     }
 }
 

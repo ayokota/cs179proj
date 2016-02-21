@@ -44,7 +44,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/passwordLayout"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <EditText
             android:layout_width="fill_parent"
@@ -134,14 +134,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/fullNameLayout"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Old Full Name"
-            android:id="@+id/oldFullName" />
+            android:text="Current name:"
+            android:layout_alignLeft="@+id/newFullName"
+            android:layout_marginTop="25dp"
+            android:id="@+id/currentFullName" />
 
 
         <EditText
@@ -152,15 +154,15 @@
             android:textSize="16sp"
             android:singleLine="true"
             android:background="@drawable/underline"
-            android:hint="Re enter?"
+            android:hint="New Full Name"
             android:alpha="0.5"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/newFullName"
-            android:layout_below="@+id/oldFullName"
-            android:layout_marginTop="5dp" />
+            android:layout_below="@+id/currentFullName"
+            android:layout_marginTop="15dp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -170,9 +172,12 @@
             android:background="@drawable/button_activity"
             android:textColor="#ffffff"
             android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/newFullName"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/newFullName"
+            android:layout_alignStart="@+id/newFullName"
+            android:layout_alignRight="@+id/newFullName"
+            android:layout_alignEnd="@+id/newFullName"
             android:layout_marginTop="40dp" />
 
     </RelativeLayout>

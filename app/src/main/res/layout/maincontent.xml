@@ -152,7 +152,7 @@
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/chatLayout"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <ListView
             android:layout_width="wrap_content"
@@ -224,34 +224,7 @@
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/meLayout"
-        android:visibility="visible"><![CDATA[
-
-        =======
-            android:text="Username"
-            android:id="@+id/username"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="23dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="25dp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-        >>>>>>> 271cfa4cd106670080281f7545fbd178470cc80c
-
-
-        ]]>
+        android:visibility="invisible">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -279,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="&quot;Full Name&quot;"
-                    android:id="@+id/textView5"
+                    android:id="@+id/fullNameTextView"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="10dp"
                     android:textSize="30sp" />
@@ -289,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="&quot;User&apos;s Account&quot;"
-                    android:id="@+id/textView6"
+                    android:id="@+id/userNameTextView"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:textSize="19sp" />
@@ -307,17 +280,20 @@
             android:layout_marginTop="40dp"
             android:background="#ffffff"
             android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:id="@+id/linearLayout">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="20dp"
+                android:id="@+id/changefullnametab"
+                android:onClick="changUserFullName">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:id="@+id/imageView4"
                     android:src="@drawable/changefullname" />
 
@@ -331,6 +307,16 @@
                     android:layout_marginTop="10dp"
                     android:layout_margin="10dp"
                     android:onClick="changUserFullName" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_above="@+id/changefullnametab"
+                android:layout_below="@+id/changepasswordtab"
+                android:layout_height="10dp"
+                android:background="#eee">
             </LinearLayout>
 
             <LinearLayout
@@ -338,11 +324,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="20dp"
+                android:id="@+id/changepasswordtab"
+                android:onClick="changeAccountPassword">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:id="@+id/imageView5"
                     android:src="@drawable/changepassword" />
 
@@ -356,9 +344,25 @@
                     android:layout_marginTop="10dp"
                     android:layout_margin="10dp"
                     android:onClick="changeAccountPassword" />
+
             </LinearLayout>
 
         </LinearLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            android:id="@+id/logoutbutton"
+            android:background="@drawable/button_logout_activity"
+            android:textColor="#ffffff"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="69dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:onClick="logOut" />
+
 
     </RelativeLayout>
 
