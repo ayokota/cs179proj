@@ -12,9 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -24,104 +23,75 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUp extends AppCompatActivity {
+public class AccountSettings extends AppCompatActivity {
 
+    RelativeLayout passwordLayout,fullNameLayout;
+
+    boolean oldpasswordBool = false;
+    boolean newpasswordBool = false;
+    boolean renewpasswordBool = false;
+    boolean newfullnameBool = false;
 
     String username = "";
-    String password = "";
-//    String repassword = "";
-    String fullname = "";
-    String sex = "";
-//    String birthdate = "";
 
-    boolean usernameBool = false;
-    boolean passwordBool = false;
-    boolean repasswordBool = false;
-    boolean fullnameBool = false;
-    boolean sexBool = false;
-//    boolean birthdateBool = false;
+    String oldpassword = "";
+    String newpassword = "";
+    String repassword = "";
+    String newfullname = "";
+
+    private GoogleApiClient client;
 
 
     boolean passwordDisplayFlag = false;
 
-    private RadioGroup sexInput;
-    private RadioButton radioSexButton;
-    private RadioButton maleInput, femaleInput;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
+    private boolean canSubmit() {
+        return oldpasswordBool && newpasswordBool && renewpasswordBool;
+    }
 
     public void returnBack(View view) {
         Intent intent = new Intent();
-        intent.setClass(this, LoginPage.class);
+        intent.setClass(this, MainContent.class);
         //Log.i("Login page", "finish");
         startActivity(intent);
     }
 
-    private boolean canSubmit() {
-        return usernameBool && passwordBool && fullnameBool && sexBool;
-    }
-
-//    private boolean canSubmit() {
-//        return usernameBool && passwordBool && repasswordBool &&
-//                fullnameBool && sexBool;
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_account_settings);
 
-        final EditText usernameInput = (EditText) findViewById(R.id.username);
-        final EditText passwordInput = (EditText) findViewById(R.id.password);
-//        EditText repasswordInput = (EditText) findViewById(R.id.repassword);
-        EditText fullnameInput = (EditText) findViewById(R.id.fullname);
+        TextView settingsTitle = (TextView) findViewById(R.id.settingsTitle);
 
-        final Button submitButton = (Button) findViewById(R.id.passwordsubmit);
+        passwordLayout = (RelativeLayout) findViewById(R.id.passwordLayout);
+        fullNameLayout = (RelativeLayout) findViewById(R.id.fullNameLayout);
 
-        final ImageButton passwordVisibleButton = (ImageButton) findViewById(R.id.pwVisibleButton);
+        final EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
+        final EditText newPassword = (EditText) findViewById(R.id.newPassword);
+        final EditText reNewPassword = (EditText) findViewById(R.id.reNewPassword);
+        final EditText newFullName = (EditText) findViewById(R.id.newFullName);
 
-        submitButton.setEnabled(false);
 
-        /*-------- sex radio button group ---------*/
-        sexInput = (RadioGroup) findViewById(R.id.sex);
-        maleInput = (RadioButton) findViewById(R.id.m);
-        femaleInput = (RadioButton) findViewById(R.id.f);
+        final Button passwordSubmitButton = (Button) findViewById(R.id.passwordsubmit);
 
-        sexInput.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.m) {
-                    //Toast.makeText(getApplicationContext(), "m", Toast.LENGTH_SHORT).show();
-                    sex = "m";
-                    sexBool = true;
-                    maleInput.setTextColor(0xFF000000);
-                    femaleInput.setTextColor(0xFFA6B1C8);
-                    if (canSubmit()) {
-                        submitButton.setEnabled(true);
-                    } else {
-                        submitButton.setEnabled(false);
-                    }
-                } else if (checkedId == R.id.f) {
-                    //Toast.makeText(getApplicationContext(), "f", Toast.LENGTH_SHORT).show();
-                    sex = "f";
-                    sexBool = true;
-                    maleInput.setTextColor(0xFFA6B1C8);
-                    femaleInput.setTextColor(0xFF000000);
-                    if (canSubmit()) {
-                        submitButton.setEnabled(true);
-                    } else {
-                        submitButton.setEnabled(false);
-                    }
-                }
-            }
-        });
+        final Button fullNameSubmitButton = (Button) findViewById(R.id.fullnamesubmit);
 
-        /*-------- sex radio button group ---------*/
 
+        final ImageButton passwordVisibleButton = (ImageButton) findViewById(R.id.passwordVisibleButton);
+
+
+        Intent i = getIntent();
+        settingsTitle.setText("Change" + i.getStringExtra("settings"));
+        username = i.getStringExtra("username");
+
+        if(i.getStringExtra("settings") == "password") {
+
+
+            passwordLayout.setVisibility(View.VISIBLE);
+            fullNameLayout.setVisibility(View.INVISIBLE);
+        } else {
+            passwordLayout.setVisibility(View.INVISIBLE);
+            fullNameLayout.setVisibility(View.VISIBLE);
+        }
 
         /*------- show/hide password button -------*/
 
@@ -130,23 +100,20 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!passwordDisplayFlag) {
-                    passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    oldPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     passwordVisibleButton.setImageDrawable(getResources().getDrawable(R.drawable.password_show));
                 } else {
-                    passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    oldPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     passwordVisibleButton.setImageDrawable(getResources().getDrawable(R.drawable.password_hide));
                 }
                 passwordDisplayFlag = !passwordDisplayFlag;
-                passwordInput.postInvalidate();
+                oldPassword.postInvalidate();
             }
         });
         /*------- show/hide password button -------*/
 
 
-
-
-
-        usernameInput.addTextChangedListener(new TextWatcher() {
+        oldPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -158,23 +125,19 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    usernameBool = true;
+                    oldpasswordBool = true;
                 } else
-                    usernameBool = false;
+                    oldpasswordBool = false;
 
-                username = s.toString();
+                oldpassword = s.toString();
                 if (canSubmit()) {
-                    submitButton.setEnabled(true);
+                    passwordSubmitButton.setEnabled(true);
                 } else {
-                    submitButton.setEnabled(false);
+                    passwordSubmitButton.setEnabled(false);
                 }
-
-                Intent intent = new Intent(SignUp.this, AccountSettings.class);
-                intent.putExtra("username", "username");
             }
         });
-
-        passwordInput.addTextChangedListener(new TextWatcher() {
+        newPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -186,45 +149,19 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    passwordBool = true;
+                    newpasswordBool = true;
                 } else
-                    passwordBool = false;
+                    newpasswordBool = false;
 
-                password = s.toString();
+                newpassword = s.toString();
                 if (canSubmit()) {
-                    submitButton.setEnabled(true);
+                    passwordSubmitButton.setEnabled(true);
                 } else {
-                    submitButton.setEnabled(false);
+                    passwordSubmitButton.setEnabled(false);
                 }
             }
         });
-
-//        repasswordInput.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (s.length() > 0) {
-//                    repasswordBool = true;
-//                } else
-//                    repasswordBool = false;
-//
-//                repassword = s.toString();
-//                if (canSubmit()) {
-//                    submitButton.setEnabled(true);
-//                } else {
-//                    submitButton.setEnabled(false);
-//                }
-//            }
-//        });
-
-        fullnameInput.addTextChangedListener(new TextWatcher() {
+        reNewPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -236,22 +173,82 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
-                    fullnameBool = true;
+                    renewpasswordBool = true;
                 } else
-                    fullnameBool = false;
+                    renewpasswordBool = false;
 
-                fullname = s.toString();
+                repassword = s.toString();
                 if (canSubmit()) {
-                    submitButton.setEnabled(true);
+                    passwordSubmitButton.setEnabled(true);
                 } else {
-                    submitButton.setEnabled(false);
+                    passwordSubmitButton.setEnabled(false);
                 }
             }
         });
 
+                /******************* Change Full user name **********************/
+        newFullName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
-        submitButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    newfullnameBool = true;
+                } else
+                    newfullnameBool = false;
+
+                newfullname = s.toString();
+                if (newfullnameBool) {
+                    fullNameSubmitButton.setEnabled(true);
+                } else {
+                    fullNameSubmitButton.setEnabled(false);
+                }
+            }
+        });
+
+        passwordSubmitButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                System.out.println(username);
+//                System.out.println(password);
+//                System.out.println(repassword);
+//                System.out.println(fullname);
+//                System.out.println(birthdate);
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", "owen");
+                params.put("newpassword", newpassword);
+//                params.put("repassword", repassword);
+                params.put("oldpasword", oldpassword);
+
+                final String json = new Gson().toJson(params);
+                System.out.println(json);
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/profUpdate", json);
+                            System.out.println(result);
+                            if (result.equals("0")) {
+                                //someshit went wrong
+                                return;
+                            } else if (result.equals("1")) {
+                                Intent intent = new Intent(AccountSettings.this, LoginPage.class);
+                                startActivity(intent);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+        fullNameSubmitButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                System.out.println(username);
@@ -262,24 +259,21 @@ public class SignUp extends AppCompatActivity {
 
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", username);
-                params.put("password", password);
-//                params.put("repassword", repassword);
-                params.put("fullname", fullname);
-                params.put("sex", sex);
+                params.put("newfullname", newfullname);
 
                 final String json = new Gson().toJson(params);
                 System.out.println(json);
                 new Thread(new Runnable() {
                     public void run() {
                         try {
-                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/userSignUp",json);
+                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/profUpdate",json);
                             System.out.println(result);
                             if (result.equals("0")) {
                                 //someshit went wrong
                                 return;
                             } else if(result.equals("1")) {
-                                Intent intent = new Intent(SignUp.this, LoginPage.class);
-                                startActivity(intent);
+//                                Intent intent = new Intent(AccountSettings.this, LoginPage.class);
+//                                startActivity(intent);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -291,7 +285,10 @@ public class SignUp extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
+
+
 
     @Override
     public void onStart() {
@@ -333,3 +330,4 @@ public class SignUp extends AppCompatActivity {
         client.disconnect();
     }
 }
+

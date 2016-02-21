@@ -31,12 +31,18 @@ public class MainContent extends AppCompatActivity {
 
     ListView chatListView;
 
+
+    String username = "";
+
     ImageView tapTab0;
     ImageView tapTab1;
     ImageView tapTab2;
     ImageView tapTab3;
 
-    RelativeLayout chatLayout,contactsLayout,hangOutLayout,meLayout;
+    TextView changeFullName, changePassword;
+
+
+    RelativeLayout chatLayout, contactsLayout, hangOutLayout, meLayout;
 
     ArrayList<HashMap<String, Object>> hashData;
 
@@ -63,6 +69,7 @@ public class MainContent extends AppCompatActivity {
 
             startActivity(intent);
 
+        } else if (tappedTag == 2) {
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -92,10 +99,29 @@ public class MainContent extends AppCompatActivity {
         }
     }
 
+    public void changeAccountPassword(View view) {
+        Intent intent = new Intent(MainContent.this, AccountSettings.class);
+        intent.putExtra("settings", "password");
+        intent.putExtra("username",username);
+        startActivity(intent);
+    }
+
+    public void changUserFullName(View view) {
+        Intent intent = new Intent(MainContent.this, AccountSettings.class);
+        intent.putExtra("settings", "fullname");
+        intent.putExtra("username",username);
+        startActivity(intent);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maincontent);
+
+
+        Intent i = getIntent();
+        username = i.getStringExtra("settings");
 
         tapTab0 = (ImageView)findViewById(R.id.img_mainframe);
         tapTab1 = (ImageView)findViewById(R.id.img_contacts);
@@ -110,7 +136,12 @@ public class MainContent extends AppCompatActivity {
 
         chatListView = (ListView) findViewById(R.id.chatListView);
 
-        final CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
+        changeFullName = (TextView) findViewById(R.id.changfullname);
+
+        changePassword = (TextView) findViewById(R.id.changepassword);
+
+
+        CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
 
         chatListView.setAdapter(customSimpleAdapter);
 
@@ -129,7 +160,20 @@ public class MainContent extends AppCompatActivity {
         });
 
 
+//        customSimpleAdapter = new CustomSimpleAdapter(MainContent.this, getHashMapData(), R.layout.custom_list_layout);
+
+        chatListView.setAdapter(customSimpleAdapter);
+
+
+
+        /*------------ meLayout--------------*/
+
+        //EditText username = (EditText) findViewById(R.id.username);
+        System.out.println("debug");
+
+        /*------------ meLayout--------------*/
     }
+
     // Define a Adapter by myself
     private class CustomSimpleAdapter extends SimpleAdapter {
         private Context context;
@@ -164,27 +208,19 @@ public class MainContent extends AppCompatActivity {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
             View layoutView = layoutInflater.inflate(layoutResource, null);
-
             ViewHolder viewHolder = new ViewHolder();
-
-            viewHolder.picture = (ImageView) layoutView.findViewById(R.id.imageViewLayout);
-
+            viewHolder.picture = (ImageView) layoutView
+                    .findViewById(R.id.imageViewLayout);
             viewHolder.number = (TextView) layoutView.findViewById(R.id.number);
 
             viewHolder.name = (TextView) layoutView.findViewById(R.id.name);
-
-            viewHolder.picture.setImageResource(Integer.parseInt(data.get(position).get("imageView").toString()));
-
+            viewHolder.picture.setImageResource(Integer.parseInt(data.get(
+                    position).get("imageView").toString()));
             viewHolder.number.setText(data.get(position).get("id").toString());
-
             Log.e("id", data.get(position).get("name").toString());
-
             viewHolder.name.setText(data.get(position).get("name").toString());
-
             return layoutView;
         }
     }
@@ -192,10 +228,10 @@ public class MainContent extends AppCompatActivity {
     //binding the data and images use the custom adapter defined by myself
 
     private ArrayList<HashMap<String, Object>> getHashMapData() {
-        hashData = new ArrayList<HashMap<String, Object>>();
+        ArrayList<HashMap<String, Object>> hashData = new ArrayList<HashMap<String, Object>>();
         for (int i = 0; i < 4; i++) {
             HashMap<String, Object> mItem = new HashMap<String, Object>();
-            mItem.put("id", "Number" + i);
+            mItem.put("id", "Number：" + i);
             mItem.put("name", "Name" + i);
             switch (i % 5) {
                 case 0:
