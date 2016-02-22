@@ -40,6 +40,9 @@ public class AppStart extends AppCompatActivity {
                    //Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_SHORT).show();
                     midToast("Log In Success!", Toast.LENGTH_SHORT);
                     break;
+                case 2:
+                    midToast("Server connected fail, please log in again", Toast.LENGTH_LONG);
+                    break;
             }
         }
     };
@@ -76,25 +79,36 @@ public class AppStart extends AppCompatActivity {
                     /***************************************************************/
 
 
-                    if (result.equals("0")) {
-                        System.out.println("log in failedddddd");
-                        Thread.currentThread().sleep(2000);
-                        Intent intent = new Intent(AppStart.this, LoginPage.class);
-                        startActivity(intent);
-                        finish();
-                        return;
-                    } else if(result.equals("1")) {
+                   if(result.equals("")==false && result.equals("0")==false) {
 //                        Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_LONG).show();
                         System.out.println("log in successssss");
                         Thread.currentThread().sleep(1000);//Delay ms
                         Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
                         message.what = 1;
                         handler.sendMessage(message);
+                        accountInfo.edit().putString("fullname", result).apply();        //password
                         Thread.currentThread().sleep(1500);
                         Intent intent = new Intent(AppStart.this, MainContent.class);
                         startActivity(intent);
                         finish();
-                    }
+                    } else if (result.equals("0")) {
+                        System.out.println("log in failedddddd");
+                        Thread.currentThread().sleep(2000);
+                        Intent intent = new Intent(AppStart.this, LoginPage.class);
+                        startActivity(intent);
+                        finish();
+                        return;
+                    } else {
+                       System.out.println("server no response");
+                       Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+                       message.what = 2;
+                       handler.sendMessage(message);
+                       Thread.currentThread().sleep(2000);
+                       Intent intent = new Intent(AppStart.this, LoginPage.class);
+                       startActivity(intent);
+                       finish();
+                       return;
+                   }
 
                 } catch (Exception e) {
                     e.printStackTrace();

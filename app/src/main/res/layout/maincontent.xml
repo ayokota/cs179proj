@@ -194,15 +194,7 @@
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/hangOutLayout"
-        android:visibility="invisible" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BOOTING..."
-            android:id="@+id/textView4"
-            android:textSize="20sp"
-            android:textColor="#5c81c7" />
+        android:visibility="invisible">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -213,6 +205,21 @@
             android:scaleType="fitCenter"
             android:padding="80dp"
             android:src="@drawable/signaltower" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Location Broadcast"
+            android:id="@+id/button2"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@+id/imgBoot"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/button_blue_color"
+            android:textColor="#ffffff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:onClick="pressToBroadcastLocation" />
     </RelativeLayout>
 
     <RelativeLayout

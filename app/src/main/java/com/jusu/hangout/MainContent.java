@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -64,10 +65,6 @@ public class MainContent extends AppCompatActivity {
             meLayout.setVisibility(View.INVISIBLE);
 
         } else if (tappedTag ==2) {
-
-            Intent intent = new Intent(MainContent.this, LocationBroadcastActivity.class);
-
-            startActivity(intent);
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -76,7 +73,6 @@ public class MainContent extends AppCompatActivity {
             contactsLayout.setVisibility(View.INVISIBLE);
             chatLayout.setVisibility(View.INVISIBLE);
             meLayout.setVisibility(View.INVISIBLE);
-            finish();
         } else if (tappedTag ==3) {
             tapTab3.setImageResource(R.mipmap.tabbar_me_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
@@ -96,6 +92,12 @@ public class MainContent extends AppCompatActivity {
             hangOutLayout.setVisibility(View.INVISIBLE);
             contactsLayout.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void pressToBroadcastLocation(View view) {
+        Intent intent = new Intent(MainContent.this, LocationBroadcastActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void changeAccountPassword(View view) {

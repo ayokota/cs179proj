@@ -285,10 +285,10 @@ public class SignUp extends AppCompatActivity {
                                 return;
                             } else if(result.equals("1")) {
                                 /************storage the log in account info on local:start****************/
-                                accountInfo.edit().putString("username", username).apply();        //username
-                                accountInfo.edit().putString("password", password).apply();        //password
-                                accountInfo.edit().putString("fullname", fullname).apply();        //fullname
-                                accountInfo.edit().putString("sex", sex).apply();                  //sex
+//                                accountInfo.edit().putString("username", username).apply();        //username
+//                                accountInfo.edit().putString("password", password).apply();        //password
+//                                accountInfo.edit().putString("fullname", fullname).apply();        //fullname
+//                                accountInfo.edit().putString("sex", sex).apply();                  //sex
                                 /************storage the log in account info on local:end******************/
                                 Intent intent = new Intent(SignUp.this, LoginPage.class);
                                 startActivity(intent);
