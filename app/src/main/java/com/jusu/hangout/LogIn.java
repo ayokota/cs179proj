@@ -158,10 +158,9 @@ public class LogIn extends AppCompatActivity {
                             if (result.equals("0")) {
                                 System.out.println("log in failed");
                                 return;
-                            } else if(result.equals("1")) {
-
+                            } else  {
                                 /************storage the log in account info on local:start****************/
-                                accountInfo.edit().putString("username", uName).apply();        //username
+                                accountInfo.edit().putString("username", result).apply();        //username
                                 accountInfo.edit().putString("password", pWord).apply();        //password
                                 /************storage the log in account info on local:end******************/
                                 //Toast.makeText(getApplicationContext(), "Log In Success!", Toast.LENGTH_LONG).show();
