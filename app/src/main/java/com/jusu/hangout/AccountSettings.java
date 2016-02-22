@@ -276,7 +276,7 @@ public class AccountSettings extends AppCompatActivity {
                 params.put("username", username);
                 params.put("newpassword", newpassword);
 //                params.put("repassword", repassword);
-                params.put("oldpasword", oldpassword);
+                params.put("oldpassword", oldpassword);
 
                 final String json = new Gson().toJson(params);
                 System.out.println(json);
