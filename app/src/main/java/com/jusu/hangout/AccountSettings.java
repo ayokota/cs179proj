@@ -87,7 +87,7 @@ public class AccountSettings extends AppCompatActivity {
                     break;
                 case 1:
                     //Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_SHORT).show();
-                    midToast("Password has updated. Please re log in!", Toast.LENGTH_LONG);
+                    midToast("Password has updated. Please re log in!", Toast.LENGTH_SHORT);
                     break;
                 case 2:
                     //Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_SHORT).show();
@@ -292,11 +292,12 @@ public class AccountSettings extends AppCompatActivity {
                                 //someshit went wrong
                                 return;
                             } else if (result.equals("1")) {
-                                accountInfo.edit().putString("password", newpassword).apply();        //update new password into local storage
+//                                accountInfo.edit().putString("password", newpassword).apply();        //update new password into local storage
                                 Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
                                 message.what = 1;
                                 handler.sendMessage(message);
                                 Intent intent = new Intent(AccountSettings.this, LoginPage.class);
+                                Thread.currentThread().sleep(2000);
                                 startActivity(intent);
                                 finish();
                             }
