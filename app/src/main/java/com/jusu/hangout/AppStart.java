@@ -52,6 +52,12 @@ public class AppStart extends AppCompatActivity {
         setContentView(R.layout.appstart);
 
 
+        /*------------------------- gcm tokens --------------------------------*/
+
+
+
+
+        /*------------------------- gcm tokens --------------------------------*/
 
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
 
@@ -80,10 +86,12 @@ public class AppStart extends AppCompatActivity {
                         System.out.println("log in failedddddd");
                         Thread.currentThread().sleep(2000);
                         Intent intent = new Intent(AppStart.this, LoginPage.class);
+                        //Intent intent = new Intent(AppStart.this, getGcmToken.class);
                         startActivity(intent);
                         finish();
                         return;
-                    } else if(result.equals("1")) {
+                        //} else if(result.equals("1")) {
+                    } else {
 //                        Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_LONG).show();
                         System.out.println("log in successssss");
                         Thread.currentThread().sleep(1000);//Delay ms
@@ -92,6 +100,7 @@ public class AppStart extends AppCompatActivity {
                         handler.sendMessage(message);
                         Thread.currentThread().sleep(1500);
                         Intent intent = new Intent(AppStart.this, MainContent.class);
+                        //Intent intent = new Intent(AppStart.this, getGcmToken.class);
                         startActivity(intent);
                         finish();
                     }

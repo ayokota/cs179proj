@@ -148,12 +148,15 @@ public class LogIn extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", uName);
                 params.put("password", pWord);
+
                 final String json = new Gson().toJson(params);
                 new Thread(new Runnable() {
                     public void run() {
                         try {
                             String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/userAuthentication",json);
                             //String result = new httpClient().Post("http://localhost:8080/main_server/userAuthentication",json);
+
+
 
                             if (result.equals("0")) {
                                 System.out.println("log in failed");
