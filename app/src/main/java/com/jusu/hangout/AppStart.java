@@ -54,8 +54,6 @@ public class AppStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.appstart);
 
-
-
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
 
         final String uName = accountInfo.getString("username", "");

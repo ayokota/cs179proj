@@ -111,11 +111,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/EditChatText"
             android:layout_alignParentBottom="true"
+            android:singleLine="true"
             android:layout_centerHorizontal="true" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:id="@+id/FunctionButton"
             android:layout_alignTop="@+id/EditChatText"
             android:layout_alignParentRight="true"
@@ -123,7 +124,8 @@
             android:src="@drawable/function_open"
             android:background="#ffffff"
             android:layout_marginRight="5dp"
-            android:onClick="moveUp" />
+            android:onClick="moveUp"
+            android:scaleType="fitCenter" />
 
     </RelativeLayout>
 
@@ -142,6 +144,7 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:transcriptMode="normal"
             android:id="@+id/chatListView" />
 
     </RelativeLayout>
