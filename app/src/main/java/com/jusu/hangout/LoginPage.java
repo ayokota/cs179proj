@@ -13,12 +13,6 @@ public class LoginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
-
-//        /*******************************testtest*****************************************/
-//        Intent intent = new Intent(LoginPage.this, MainContent.class);
-//        startActivity(intent);
-//        finish();
-//        /*******************************testtest*****************************************/
     }
 
     public void logIn(View view) {
