@@ -39,8 +39,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:paddingBottom="2dp"
-            >
+            android:paddingBottom="2dp">
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -174,15 +174,8 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listView2" />
+            android:id="@+id/contactsListView" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="This is contacts page"
-            android:id="@+id/textView3"
-            android:textSize="50sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -194,14 +187,32 @@
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/hangOutLayout"
-        android:visibility="invisible" >
+        android:visibility="invisible">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This is finding new friends page"
-            android:id="@+id/textView4"
-            android:textSize="50sp" />
+            android:id="@+id/imgBoot"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:padding="80dp"
+            android:src="@drawable/signaltower" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Location Broadcast"
+            android:id="@+id/button2"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@+id/imgBoot"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/button_blue_color"
+            android:textColor="#ffffff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:onClick="pressToBroadcastLocation" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -213,80 +224,146 @@
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/meLayout"
-        android:visibility="invisible" >
+        android:visibility="invisible">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:background="#ffffff"
+            android:id="@+id/userinfo">
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:id="@+id/imageView3"
+                android:src="@drawable/userphoto"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="&quot;Full Name&quot;"
+                    android:id="@+id/fullNameTextView"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="&quot;User&apos;s Account&quot;"
+                    android:id="@+id/userNameTextView"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="19sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Username"
-            android:id="@+id/username"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/userinfo"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="23dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="25dp" />
+            android:layout_marginTop="40dp"
+            android:background="#ffffff"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:id="@+id/linearLayout">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Full Name:"
-            android:id="@+id/fullname"
-            android:layout_below="@+id/username"
-            android:layout_alignLeft="@+id/username"
-            android:layout_alignStart="@+id/username"
-            android:layout_marginTop="27dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/changefullnametab"
+                android:onClick="changUserFullName">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="value"
-            android:id="@+id/fullnameValue"
-            android:layout_alignBottom="@+id/fullname"
-            android:layout_centerHorizontal="true" />
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:id="@+id/imageView4"
+                    android:src="@drawable/changefullname" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Sex:"
-            android:id="@+id/sex"
-            android:layout_marginTop="27dp"
-            android:layout_below="@+id/fullname"
-            android:layout_alignLeft="@+id/fullname"
-            android:layout_alignStart="@+id/fullname" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Change Full Name"
+                    android:id="@+id/changfullname"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_margin="10dp"
+                    android:onClick="changUserFullName" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="value"
-            android:id="@+id/sexValue"
-            android:layout_alignTop="@+id/sex"
-            android:layout_alignLeft="@+id/fullnameValue"
-            android:layout_alignStart="@+id/fullnameValue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_above="@+id/changefullnametab"
+                android:layout_below="@+id/changepasswordtab"
+                android:layout_height="10dp"
+                android:background="#eee">
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/changepasswordtab"
+                android:onClick="changeAccountPassword">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:id="@+id/imageView5"
+                    android:src="@drawable/changepassword" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Change Password"
+                    android:id="@+id/changepassword"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_margin="10dp"
+                    android:onClick="changeAccountPassword" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Change Password"
-            android:id="@+id/changePass"
-            android:layout_below="@+id/sex"
-            android:layout_alignLeft="@+id/sex"
-            android:layout_alignStart="@+id/sex"
-            android:layout_marginTop="41dp" />
+            android:text="Log Out"
+            android:id="@+id/logoutbutton"
+            android:background="@drawable/button_logout_activity"
+            android:textColor="#ffffff"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="69dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:onClick="logOut" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change Profile"
-            android:id="@+id/changeProf"
-            android:layout_below="@+id/changePass"
-            android:layout_alignLeft="@+id/changePass"
-            android:layout_alignStart="@+id/changePass" />
+
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#eee"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+
+    <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="45dp"
+    android:layout_alignParentTop="true"
+    android:background="@drawable/titlebar"
+    android:id="@+id/title_bar">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="22sp"
+        android:textColor="#ffffff"
+        android:text="Me"
+        android:id="@+id/settingsTitle"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="49dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/return_arrow"
+        android:onClick="returnBack"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/passwordLayout"
+        android:visibility="invisible">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:background="@drawable/underline"
+            android:hint="Old Password"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPassword"
+            android:id="@+id/oldPassword"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:background="@drawable/underline"
+            android:hint="New Password"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPassword"
+            android:id="@+id/newPassword"
+            android:layout_below="@+id/oldPassword"
+            android:layout_marginTop="5dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:background="@drawable/underline"
+            android:hint="Re enter?"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/reNewPassword"
+            android:layout_below="@+id/newPassword"
+            android:layout_marginTop="5dp" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/passwordsubmit"
+            android:background="@drawable/button_activity"
+            android:textColor="#ffffff"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/reNewPassword"
+            android:layout_alignStart="@+id/reNewPassword"
+            android:layout_alignRight="@+id/reNewPassword"
+            android:layout_alignEnd="@+id/reNewPassword"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/reNewPassword" />
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/passwordVisibleButton"
+            android:src="@drawable/password_hide"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            android:layout_alignBottom="@+id/oldPassword"
+            android:layout_alignRight="@+id/oldPassword"
+            android:layout_alignEnd="@+id/oldPassword"
+            android:layout_marginBottom="2dp"
+            android:onClick="onClick" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/fullNameLayout"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Current name:"
+            android:layout_alignLeft="@+id/newFullName"
+            android:layout_marginTop="25dp"
+            android:id="@+id/currentFullName" />
+
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:background="@drawable/underline"
+            android:hint="New Full Name"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/newFullName"
+            android:layout_below="@+id/currentFullName"
+            android:layout_marginTop="15dp" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/fullnamesubmit"
+            android:background="@drawable/button_activity"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/newFullName"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/newFullName"
+            android:layout_alignStart="@+id/newFullName"
+            android:layout_alignRight="@+id/newFullName"
+            android:layout_alignEnd="@+id/newFullName"
+            android:layout_marginTop="40dp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
