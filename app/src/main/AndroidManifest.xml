@@ -99,6 +99,15 @@
             </intent-filter>
         </service>
         <!-- [END instanceId_listener] -->
+        <!-- [START gcm_listener] -->
+        <service
+            android:name="com.jusu.hangout.GcmMessageReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
     </application>
 
 </manifest>
