@@ -62,6 +62,11 @@ public class GcmRegistrationIntentService extends IntentService {
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(Constants.REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+
+//        System.out.println("through GcmRegistrationIntentService");
+//        Intent intent2 = new Intent(GcmRegistrationIntentService.this, LoginPage.class);
+//        this.startService(intent2);
+
     }
 
     /**

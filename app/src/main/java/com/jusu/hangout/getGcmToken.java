@@ -34,7 +34,6 @@ public class getGcmToken extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_get_gcm_token);
 
-        System.out.println("In GCM!!!!!!!!!!!");
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -47,6 +46,8 @@ public class getGcmToken extends AppCompatActivity {
                         .getBoolean(Constants.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
                     mInformationTextView.setText("Token sent and successful");
+                    Intent intent2 = new Intent(getGcmToken.this, LoginPage.class);
+                    startService(intent2);
                 } else {
                     mInformationTextView.setText("Error receiving tokens");
                 }
@@ -58,9 +59,10 @@ public class getGcmToken extends AppCompatActivity {
             // Start IntentService to register this application with GCM.
             Intent intent = new Intent(this, GcmRegistrationIntentService.class);
             startService(intent);
+
         }
-//        Intent intent = new Intent(this, GcmRegistrationIntentService.class);
-//        startService(intent);
+        //finish();
+
     }
 
     @Override

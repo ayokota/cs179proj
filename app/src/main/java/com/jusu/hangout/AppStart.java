@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -51,65 +53,78 @@ public class AppStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.appstart);
 
-
-        /*------------------------- gcm tokens --------------------------------*/
-
-
-
-
-        /*------------------------- gcm tokens --------------------------------*/
-
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+        final InstanceID instanceID = InstanceID.getInstance(this);
 
-        final String uName = accountInfo.getString("username", "");
-        final String pWord = accountInfo.getString("password", "");
-//        Log.i("usernameeeee", uName);
-//        Log.i("passworddddd", pWord);
-
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("username", uName);
-        params.put("password", pWord);
-        final String json = new Gson().toJson(params);
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/userAuthentication",json);
-                    //String result = new httpClient().Post("http://localhost:8080/main_server/userAuthentication",json);
-                    /***************************************************************/
-                    if(uName.equals("")==true && pWord.equals("")==true)    //this should be add into server
-                        result = "0";
-                    /***************************************************************/
-
-
-                    if (result.equals("0")) {
-                        System.out.println("log in failedddddd");
-                        Thread.currentThread().sleep(2000);
-                        Intent intent = new Intent(AppStart.this, LoginPage.class);
-                        //Intent intent = new Intent(AppStart.this, getGcmToken.class);
-                        startActivity(intent);
-                        finish();
-                        return;
-                        //} else if(result.equals("1")) {
-                    } else {
-//                        Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_LONG).show();
-                        System.out.println("log in successssss");
-                        Thread.currentThread().sleep(1000);//Delay ms
-                        Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
-                        message.what = 1;
-                        handler.sendMessage(message);
-                        Thread.currentThread().sleep(1500);
-                        Intent intent = new Intent(AppStart.this, MainContent.class);
-                        //Intent intent = new Intent(AppStart.this, getGcmToken.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
+                    String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
+                            GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                    accountInfo.edit().putString("gcmtoken", token).apply();
+                    //intent.putExtra("gcmToken", token);
+                    Log.i("main", token);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
+            }}).start();
+        Intent intent = new Intent(AppStart.this, LoginPage.class);
+        startActivity(intent);
+
+//        intent = new Intent(AppStart.this, LoginPage.class);
+//        startActivity(intent);
+//
+//        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+//
+//        final String uName = accountInfo.getString("username", "");
+//        final String pWord = accountInfo.getString("password", "");
+////        Log.i("usernameeeee", uName);
+////        Log.i("passworddddd", pWord);
+//
+//
+//        Map<String, String> params = new HashMap<String, String>();
+//        params.put("username", uName);
+//        params.put("password", pWord);
+//        final String json = new Gson().toJson(params);
+//        new Thread(new Runnable() {
+//            public void run() {
+//                try {
+//                    String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/userAuthentication",json);
+//                    //String result = new httpClient().Post("http://localhost:8080/main_server/userAuthentication",json);
+//                    /***************************************************************/
+//                    if(uName.equals("")==true && pWord.equals("")==true)    //this should be add into server
+//                        result = "0";
+//                    /***************************************************************/
+//
+//
+//                    if (result.equals("0")) {
+//                        System.out.println("log in failedddddd");
+//                        Thread.currentThread().sleep(2000);
+//                        Intent intent = new Intent(AppStart.this, LoginPage.class);
+//                        //Intent intent = new Intent(AppStart.this, getGcmToken.class);
+//                        startActivity(intent);
+//                        finish();
+//                        return;
+//                        //} else if(result.equals("1")) {
+//                    } else {
+////                        Toast.makeText(getApplicationContext(),"Log In Success!",Toast.LENGTH_LONG).show();
+//                        System.out.println("log in successssss");
+//                        Thread.currentThread().sleep(1000);//Delay ms
+//                        Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+//                        message.what = 1;
+//                        handler.sendMessage(message);
+//                        Thread.currentThread().sleep(1500);
+//                        Intent intent = new Intent(AppStart.this, MainContent.class);
+//                        //Intent intent = new Intent(AppStart.this, getGcmToken.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
 
 
 //        new Handler().postDelayed(new Runnable() {

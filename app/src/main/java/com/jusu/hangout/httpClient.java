@@ -3,6 +3,8 @@ package com.jusu.hangout;
 /**
  * Created by ayoko001 on 2/9/16.
  */
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -53,7 +55,7 @@ public class httpClient {
             in.close();
 
             //print result
-            System.out.println(response.toString());
+            Log.i("httpClient", response.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
