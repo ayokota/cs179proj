@@ -27,5 +27,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.google.code.gson:gson:2.5'
     compile 'com.google.android.gms:play-services:8.4.0'
-    compile 'com.pubnub:pubnub-android:3.7.+'
+    //compile 'com.pubnub:pubnub-android:3.7.6'   // get the pubnub sdk
+    compile 'com.pubnub:pubnub-android-debug:3.7.+' //For the debug version
 }

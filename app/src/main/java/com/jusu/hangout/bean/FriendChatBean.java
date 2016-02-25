@@ -1,13 +1,5 @@
 package com.jusu.hangout.bean;
 
-/**
- * 人物对象：教师
- * 项目：聊天对话效果界面
- * 包名：com.junhua.ceo.bean
- * @author Yuanjunhua
- *
- * 2014-9-4上午11:01:23
- */
 public class FriendChatBean extends Bean{
 
 	/** 聊天内容   */
@@ -55,7 +47,7 @@ public class FriendChatBean extends Bean{
 	}
 	@Override
 	public String toString() {
-		return "PeopleStudentBean [tMessage=" + tMessage + ", portrait="
+		return "FriendChatBean [tMessage=" + tMessage + ", portrait="
 				+ portrait + ", time=" + time + ", id=" + id + "]";
 	}
 	

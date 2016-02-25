@@ -110,5 +110,9 @@ public class CustomChatAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 
 	}
+	/** Update the received message from others */
+	public void addItem(Bean bean) {
+		beans.add(bean);
+	}
 
 }

@@ -3,14 +3,9 @@ package com.jusu.hangout.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**   
- *  将时间戳转为字符串 
- * 项目：聊天对话效果界面
- * 包名：com.junhua.ceo.util
- * @author Yuanjunhua
- *
- * 2014-9-4下午2:07:33
- */
+
+//  将时间戳转为字符串
+
 public class DateFomats {
 	
 

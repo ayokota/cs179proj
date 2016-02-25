@@ -2,6 +2,7 @@ package com.jusu.hangout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,16 +22,39 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
 
 import com.jusu.hangout.adapter.CustomChatAdapter;
 import com.jusu.hangout.bean.Bean;
 import com.jusu.hangout.bean.FriendChatBean;
 import com.jusu.hangout.bean.UserChatBean;
+import com.pubnub.api.Callback;
+import com.pubnub.api.Pubnub;
+import com.pubnub.api.PubnubError;
+import com.pubnub.api.PubnubException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.LinkedList;
 
 public class ChatPage extends AppCompatActivity {
+
+    //pubnub init string
+    String PUBLISH_KEY = "pub-c-6e01a57a-404e-4fdd-9283-5fd4782be8f5";
+    String SUBSCRIBE_KEY = "sub-c-caec8254-d91f-11e5-8758-02ee2ddab7fe";
+    String CIPHER_KEY = "";
+    String SECRET_KEY = "";
+    String ORIGIN = "pubsub";
+    String AUTH_KEY;
+    String UUID;
+    Boolean SSL = false;
+    Pubnub pubnub;
+
+
+    String currentChatMsg = "";
 
     private LinkedList<FriendChatBean> sList = null;
     private LinkedList<UserChatBean> tList = null;
@@ -44,13 +68,13 @@ public class ChatPage extends AppCompatActivity {
 
     private CustomChatAdapter adapter;
 
-
-
     private RelativeLayout DialogueLayout;
     private ImageButton functionButton;
     private RelativeLayout bottomNavi;
     private EditText editChatText;
     private RelativeLayout functionNavi;
+
+    private Handler handler=null;
 
     public void moveUp(View view) {
 
@@ -106,15 +130,19 @@ public class ChatPage extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {                                            // OnCreate----------------------------------!
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_page);
 
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+
         TextView chatTitle = (TextView) findViewById(R.id.chatTitle);
-
         editChatText = (EditText) findViewById(R.id.EditChatText);
-
         functionButton = (ImageButton) findViewById(R.id.FunctionButton);
         DialogueLayout = (RelativeLayout) findViewById(R.id.DialogueLayout);
         bottomNavi = (RelativeLayout) findViewById(R.id.bottom_navi);
@@ -125,11 +153,11 @@ public class ChatPage extends AppCompatActivity {
 
         functionNavi.setVisibility(View.INVISIBLE);
 
+        //创建属于主线程的handler
+        handler=new Handler();
+
         Intent i = getIntent();
         chatTitle.setText("(" + i.getStringExtra("numberid") + ")" + i.getStringExtra("name"));
-
-        //InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        //imm.hideSoftInputFromWindow(editChatText.getWindowToken(), 0);
 
         editChatText.addTextChangedListener(new TextWatcher() {
 
@@ -175,8 +203,8 @@ public class ChatPage extends AppCompatActivity {
             beans.add(sList.get(loopj));
             beans.add(tList.get(loopj));
         }
-        initViewsMethod();
-        onHandleMethod();
+        initViewsMethod();              //chat listview initialized
+        onHandleMethod();               //send message function init
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -185,22 +213,14 @@ public class ChatPage extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(editChatText.getWindowToken(), 0);
             }
         });
+        adapter = new CustomChatAdapter(this, beans);
+        listView.setAdapter(adapter);
+        listView.setSelection(beans.size() - 1);
+
+        pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);    //Pubnub Setup
+        subscribeMessage(accountInfo.getString("username", ""),"text");                                 //Pubnub subscribe function---------------------------------------------!!Pubnub Subscribe
     }
-   /* private final EditText.OnEditorActionListener editorActionListener =
-               new TextView.OnEditorActionListener() {
-                       @Override
-                       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                               if (actionId == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
-                                       //业务代码
-                                       haoMent.createTest(Test.getId(), v.getText().toString());
-                                       UiUtils.hideSoftKeyboard(getApplicationContext(), haoTest.this);
-                                       v.setText("");
-                                       v.clearFocus();
-                                       handler.post(updateView);
-                                   }
-                               return true;
-                           }
-                  };*/
+
 
 
     /** 处理listView 的 item方法  */
@@ -227,37 +247,44 @@ public class ChatPage extends AppCompatActivity {
 
     }
 
+
+
     /** 处理发送信息的方法  */
     public void onHandleMethod(){
-        adapter = new CustomChatAdapter(this, beans);
-        listView.setAdapter(adapter);
+
+        edt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listView.setSelection(beans.size() - 1);
+            }
+        });
 
         edt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-              @Override
-              public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                  //当actionId == XX_SEND 或者 XX_DONE时都触发
-                  //或者event.getKeyCode == ENTER 且 event.getAction == ACTION_DOWN时也触发
-                  //注意，这是一定要判断event != null。因为在某些输入法上会返回null。
-                  if (actionId == EditorInfo.IME_ACTION_SEND
-                          || actionId == EditorInfo.IME_ACTION_DONE
-                          || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
-                      //处理事件
-                      String txt = edt.getText().toString();
-                      if (txt.equals("")) {
-                          Toast.makeText(getApplicationContext(), "发送内容不能为空 !", Toast.LENGTH_SHORT).show();
-                      }else {
-                          adapter.addItemNotifiChange(new Bean(txt, R.drawable.userphoto, new Date() + "", 0));
-                          edt.setText("");
-                          listView.setSelection(beans.size() - 1);
-                          System.out.println(txt);
-                          System.out.println("Enter is pressed");
-//                          InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                          imm.hideSoftInputFromWindow(editChatText.getWindowToken(), 0);
-                          v.clearFocus();
-                      }
-                  }
-                  return true;
-              }
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                //当actionId == XX_SEND 或者 XX_DONE时都触发
+                //或者event.getKeyCode == ENTER 且 event.getAction == ACTION_DOWN时也触发
+                //注意，这是一定要判断event != null。因为在某些输入法上会返回null。
+                if (actionId == EditorInfo.IME_ACTION_SEND
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || (event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
+                    //处理事件
+                    String txt = edt.getText().toString();
+                    if (txt.equals("")) {
+                        Toast.makeText(getApplicationContext(), "发送内容不能为空 !", Toast.LENGTH_SHORT).show();
+                    } else {
+                        adapter.addItemNotifiChange(new Bean(txt, R.drawable.userphoto, new Date() + "", 0));
+                        publishMessage("reno",txt);
+//                        publishMessage("demotest",txt);
+                        edt.setText("");
+                        listView.setSelection(beans.size() - 1);
+                        System.out.println(txt);
+                        System.out.println("Enter is pressed");
+                        v.clearFocus();
+                    }
+                }
+                return true;
+            }
         });
     }
 
@@ -278,11 +305,102 @@ public class ChatPage extends AppCompatActivity {
     }
 
 
+    //Pubnub Subscribe function
+    private void subscribeMessage(String subscribeChannel, final String wantedMsg){
+
+
+        try {
+            pubnub.subscribe(subscribeChannel, new Callback() {
+
+                        @Override
+                        public void connectCallback(String channel, Object message) {
+                            System.out.println("SUBSCRIBE : CONNECT on channel:" + channel
+                                    + " : " + message.getClass() + " : "
+                                    + message.toString());
+                        }
+
+                        @Override
+                        public void disconnectCallback(String channel, Object message) {
+                            System.out.println("SUBSCRIBE : DISCONNECT on channel:" + channel
+                                    + " : " + message.getClass() + " : "
+                                    + message.toString());
+                        }
+
+                        public void reconnectCallback(String channel, Object message) {
+                            System.out.println("SUBSCRIBE : RECONNECT on channel:" + channel
+                                    + " : " + message.getClass() + " : "
+                                    + message.toString());
+                        }
+
+                        @Override
+                        public void successCallback(String channel, Object message) {
+                            System.out.println("SUBSCRIBE : " + channel + " : "
+                                    + message.getClass() + " : " + message.toString());
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(message.toString());
+
+                                Log.i("text内容", jsonObject.getString(wantedMsg));
+                                currentChatMsg = jsonObject.getString(wantedMsg);
+
+                                handler.post(runnableUi);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void errorCallback(String channel, PubnubError error) {
+                            System.out.println("SUBSCRIBE : ERROR on channel " + channel
+                                    + " : " + error.toString());
+                        }
+                    }
+
+            );
+
+        } catch (PubnubException e) {
+            e.printStackTrace();
+        }
+
+    }
+    //Pubnub Publish function
+    public void publishMessage(String publishChannel, String textmessage) {
+        /* Publish a simple message to the demo_tutorial channel */
+        Callback callback = new Callback() {
+            public void successCallback(String channel, Object response) {
+                System.out.println(response.toString());
+            }
+
+            public void errorCallback(String channel, PubnubError error) {
+                System.out.println(error.toString());
+            }
+        };
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("text",textmessage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        pubnub.publish(publishChannel, jsonObject, callback);
+    }
+
+    // 构建Runnable对象，在runnable中更新界面
+    Runnable   runnableUi=new  Runnable(){
+        @Override
+        public void run() {
+            //更新界面
+            adapter.addItemNotifiChange(new Bean(currentChatMsg, R.drawable.userphoto, new Date() + "", 1));
+            listView.setSelection(beans.size() - 1);
+            currentChatMsg="";
+        }
+    };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         setContentView(R.layout.view_null);
-        Log.i("onDestroy","!!!!!!!!!!!!");
+        Log.i("onDestroy", "!!!!!!!!!!!!");
     }
 }
