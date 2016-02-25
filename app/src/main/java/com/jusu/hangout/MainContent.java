@@ -53,6 +53,7 @@ public class MainContent extends AppCompatActivity {
     ArrayList<HashMap<String, Object>> contactsData;
     public static int contactcount = 0 ;
     public static String contacthold = "";
+    public static String status = "";
 
     public void clickFunction(View view) {
 
@@ -180,7 +181,7 @@ public class MainContent extends AppCompatActivity {
 
 
         final CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
-        final ContactsAdapter customContactsAdapter = new ContactsAdapter( MainContent.this, getContactMapData(), R.layout.custom_list_layout);
+        final ContactsAdapter customContactsAdapter = new ContactsAdapter( MainContent.this, getContactMapData(), R.layout.custom_contact_layout);
 
         chatListView.setAdapter(customSimpleAdapter);
 
@@ -278,13 +279,14 @@ public class MainContent extends AppCompatActivity {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            View layoutView= convertView;
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View layoutView = layoutInflater.inflate(layoutResource, null);
+            layoutView = layoutInflater.inflate(layoutResource, null);
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.picture = (ImageView) layoutView.findViewById(R.id.imageViewLayout);
             viewHolder.number = (TextView) layoutView.findViewById(R.id.number);
-
             viewHolder.name = (TextView) layoutView.findViewById(R.id.name);
+
             viewHolder.picture.setImageResource(Integer.parseInt(data.get(position).get("imageView").toString()));
             viewHolder.number.setText(data.get(position).get("id").toString());
             Log.e("id", data.get(position).get("name").toString());
@@ -309,6 +311,8 @@ public class MainContent extends AppCompatActivity {
             ImageView picture;
             TextView number;
             TextView name;
+            Button add;
+            Button delete;
         }
         /*
          * (non-Javadoc)
@@ -317,18 +321,38 @@ public class MainContent extends AppCompatActivity {
          * android.view.ViewGroup)
          */
         @Override
+
+
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View layoutView = layoutInflater.inflate(layoutResource, null);
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.picture = (ImageView) layoutView.findViewById(R.id.imageViewLayout);
             viewHolder.number = (TextView) layoutView.findViewById(R.id.number);
-
             viewHolder.name = (TextView) layoutView.findViewById(R.id.name);
+            viewHolder.add = (Button) layoutView.findViewById(R.id.accept_btn);
+            viewHolder.delete = (Button) layoutView.findViewById(R.id.reject_btn);
+
+            //TextView listItemText = (TextView) layoutView.findViewById(R.id.list_item_string);
+            //listItemText.setText(data.get(position));
+
             viewHolder.picture.setImageResource(Integer.parseInt(data.get(position).get("imageView").toString()));
             viewHolder.number.setText(data.get(position).get("id").toString());
+
+
             Log.e("id", data.get(position).get("name").toString());
             viewHolder.name.setText(data.get(position).get("name").toString());
+            if(data.get(position).get("name").toString().equals("accepted")){
+                viewHolder.add.setVisibility(View.INVISIBLE);
+                viewHolder.delete.setVisibility(View.INVISIBLE);}
+            else{
+                viewHolder.add.setVisibility(View.VISIBLE);
+                viewHolder.delete.setVisibility(View.VISIBLE);}
+            //Button rejectBtn = (Button)layoutView.findViewById(R.id.reject_btn);
+            //Button acceptBtn = (Button)layoutView.findViewById(R.id.accept_btn);
+            //rejectBtn.setOnClickListener(new View.OnClickListener()) {
+            //}
+            //};
             return layoutView;
         }
     }
@@ -371,14 +395,14 @@ public class MainContent extends AppCompatActivity {
     public static int count(String s, char c) {
         return s.length()==0 ? 0 : (s.charAt(0)==c ? 1 : 0) + count(s.substring(1),c);
     }
-
+// creating contacts list from server
     private ArrayList<HashMap<String, Object>> getContactMapData() {
         contactsData = new ArrayList<HashMap<String, Object>>();
         Map<String, String> params = new HashMap<String, String>();
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
         username = accountInfo.getString("username", "");
         System.out.println(username);
-        params.put("user1", "ayoko001");
+        params.put("user1", "ayoko001");// change later rn only for ayoko001
         final String json = new Gson().toJson(params);
         System.out.println(json);
         new Thread(new Runnable() {
@@ -392,10 +416,20 @@ public class MainContent extends AppCompatActivity {
                         HashMap<String, Object> mItem = new HashMap<String, Object>();
                         if (result.contains(":")){
                             contacthold= result.substring(1, result.indexOf(":")-1);
+                            if (i < contactcount) {
+                                status = result.substring(result.indexOf(":") + 2, result.indexOf(",") - 1);
+                            }
+                            else
+                                status = result.substring(result.indexOf(":") + 2, result.length()-1);
                         }
-                        result = result.substring(result.indexOf(",")+1,result.length());
+                        if (result.contains(",")) {
+                            result = result.substring(result.indexOf(",") + 1, result.length());
+                        }
+                        System.out.println(result);
+                        System.out.println(contacthold);
+                        System.out.println(status);
                         mItem.put("id", contacthold);
-                        mItem.put("name", "contact:" + i);
+                        mItem.put("name", status);
                         switch (i % 5) {
                             case 0:
                                 mItem.put("imageView", R.drawable.text_people_1);
@@ -416,6 +450,10 @@ public class MainContent extends AppCompatActivity {
                                 mItem.put("imageView", R.drawable.text_people_6);
                                 break;
                         }
+                        if (status=="accepted")
+                            mItem.put("status", '0');
+                        else if (status == "requested")
+                            mItem.put("status", '1');
                         contactsData.add(mItem);
                     }
 

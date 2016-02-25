@@ -28,4 +28,6 @@ public class Contacts extends AppCompatActivity {
         //imm.hideSoftInputFromWindow(editChatText.getWindowToken(), 0);
 
     }
+
+    
 }
