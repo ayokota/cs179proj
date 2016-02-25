@@ -14,12 +14,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GcmPubSub;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AppStart extends AppCompatActivity {
+
+    private static final String[] TOPICS = {"global"};
 
     /**************Handler update UI:start********************/
     void midToast(String str, int showTime)
@@ -56,8 +62,29 @@ public class AppStart extends AppCompatActivity {
 
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
 
+        final InstanceID instanceID = InstanceID.getInstance(this);
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
+                            GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                    subscribeTopics(token);
+                    accountInfo.edit().putString("gcmtoken", token).apply();
+                    //intent.putExtra("gcmToken", token);
+                    Log.i("main", token);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }}).start();
+        Intent intent = new Intent(AppStart.this, LoginPage.class);
+        startActivity(intent);
+
+
+
         final String uName = accountInfo.getString("username", "");
         final String pWord = accountInfo.getString("password", "");
+
 //        Log.i("usernameeeee", uName);
 //        Log.i("passworddddd", pWord);
 
@@ -65,6 +92,8 @@ public class AppStart extends AppCompatActivity {
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", uName);
         params.put("password", pWord);
+        params.put("gcmtoken", accountInfo.getString("gcmtoken",""));
+
         final String json = new Gson().toJson(params);
         new Thread(new Runnable() {
             public void run() {
@@ -134,6 +163,15 @@ public class AppStart extends AppCompatActivity {
         super.onDestroy();
         setContentView(R.layout.view_null);
         Log.i("onDestroy","!!!!!!!!!!!!");
+    }
+
+    // [START subscribe_topics]
+    private void subscribeTopics(String token) throws IOException {
+        GcmPubSub pubSub = GcmPubSub.getInstance(this);
+        Log.i("subscribing", "subscribing!!@!!!");
+        for (String topic : TOPICS) {
+            pubSub.subscribe(token, "/topics/" + topic, null);
+        }
     }
 
 }

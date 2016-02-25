@@ -184,6 +184,8 @@ public class LogIn extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", uName);
                 params.put("password", pWord);
+                params.put("gcmtoken", accountInfo.getString("gcmtoken", ""));
+
                 final String json = new Gson().toJson(params);
                 new Thread(new Runnable() {
                     public void run() {
