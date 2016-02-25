@@ -121,6 +121,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
         pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);    //Pubnub Setup
         subscribeMessage(accountInfo.getString("username", ""));                                 //Pubnub subscribe function-------------!!Pubnub Subscribe
+        //subscribeMessage("locationtest");                                 //Pubnub subscribe function-------------!!Pubnub Subscribe
 
         Location location = locationManager.getLastKnownLocation(provider);
 
@@ -367,6 +368,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 //        }
 
         publishMessage("locationtest", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
+        //publishMessage("reno", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
 
         handler.postDelayed(new Runnable() {
             @Override
