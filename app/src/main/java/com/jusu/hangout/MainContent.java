@@ -54,6 +54,9 @@ public class MainContent extends AppCompatActivity {
     public static int contactcount = 0 ;
     public static String contacthold = "";
     public static String status = "";
+    public static int contactstart = 0;
+    Button Acc, Rej;
+    //final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
 
     public void clickFunction(View view) {
 
@@ -178,8 +181,17 @@ public class MainContent extends AppCompatActivity {
                 chatLayout.setVisibility(View.INVISIBLE);
                 accountInfo.edit().putString("fromsetting", "").apply();
         }
-
-
+        if (contactstart == 1)
+        {
+            tapTab1.setImageResource(R.mipmap.tabbar_contacts_hl);
+            tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
+            tapTab2.setImageResource(R.mipmap.tabbar_discover);
+            tapTab3.setImageResource(R.mipmap.tabbar_me);
+            contactsLayout.setVisibility(View.VISIBLE);
+            chatLayout.setVisibility(View.INVISIBLE);
+            hangOutLayout.setVisibility(View.INVISIBLE);
+            meLayout.setVisibility(View.INVISIBLE);
+        }
         final CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
         final ContactsAdapter customContactsAdapter = new ContactsAdapter( MainContent.this, getContactMapData(), R.layout.custom_contact_layout);
 
@@ -209,8 +221,17 @@ public class MainContent extends AppCompatActivity {
                 finish();
             }
         });
+        /*
+        setContentView(R.layout.custom_contact_layout);
+        Button deleteBtn = (Button)findViewById(R.id.reject_btn);
+        Button addBtn = (Button)findViewById(R.id.accept_btn);
 
-
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contactsListView.setAdapter(customContactsAdapter);
+            }
+        });*/
 //        chatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -300,6 +321,7 @@ public class MainContent extends AppCompatActivity {
         private ArrayList<HashMap<String, Object>> data;
         private int layoutResource;
 
+
         public ContactsAdapter(Context context,
                                ArrayList<HashMap<String, Object>> data, int resource) {
             super(context, data, resource, null, null);
@@ -323,7 +345,8 @@ public class MainContent extends AppCompatActivity {
         @Override
 
 
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final SharedPreferences accountInfo = context.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View layoutView = layoutInflater.inflate(layoutResource, null);
             ViewHolder viewHolder = new ViewHolder();
@@ -343,16 +366,73 @@ public class MainContent extends AppCompatActivity {
             Log.e("id", data.get(position).get("name").toString());
             viewHolder.name.setText(data.get(position).get("name").toString());
             if(data.get(position).get("name").toString().equals("accepted")){
-                viewHolder.add.setVisibility(View.INVISIBLE);
-                viewHolder.delete.setVisibility(View.INVISIBLE);}
+                viewHolder.add.setVisibility(View.VISIBLE);
+                viewHolder.delete.setVisibility(View.VISIBLE);}
             else{
                 viewHolder.add.setVisibility(View.VISIBLE);
                 viewHolder.delete.setVisibility(View.VISIBLE);}
-            //Button rejectBtn = (Button)layoutView.findViewById(R.id.reject_btn);
-            //Button acceptBtn = (Button)layoutView.findViewById(R.id.accept_btn);
-            //rejectBtn.setOnClickListener(new View.OnClickListener()) {
-            //}
-            //};
+            Button rejectButton = (Button)layoutView.findViewById(R.id.reject_btn);
+            Button acceptButton = (Button)layoutView.findViewById(R.id.accept_btn);
+            rejectButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    //do something
+                    contactstart=1;
+                    contactsData = new ArrayList<HashMap<String, Object>>();
+                    Map<String, String> params = new HashMap<String, String>();
+                   // final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+                    username = accountInfo.getString("username", "");
+                    System.out.println(username);
+                    params.put("user1", "ayoko001");// change later rn only for ayoko001
+                    params.put("user2", data.get(position).get("id").toString()); // gets users of current spot
+                    params.put("status", "rejected");
+                    final String json = new Gson().toJson(params);
+                    System.out.println(json);
+                    new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts",json);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    notifyDataSetChanged();
+                    Intent intent = new Intent(MainContent.this, MainContent.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            acceptButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    //do something
+                    contactstart = 1;
+                    contactsData = new ArrayList<HashMap<String, Object>>();
+                    Map<String, String> params = new HashMap<String, String>();
+                    // final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+                    username = accountInfo.getString("username", "");
+                    System.out.println(username);
+                    params.put("user1", "ayoko001");// change later rn only for ayoko001
+                    params.put("user2", data.get(position).get("id").toString());
+                    params.put("status", "accepted");
+                    final String json = new Gson().toJson(params);
+                    System.out.println(json);
+                    new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts",json);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    notifyDataSetChanged();
+                    Intent intent = new Intent(MainContent.this, MainContent.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
             return layoutView;
         }
     }
