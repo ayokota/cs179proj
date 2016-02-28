@@ -27,13 +27,14 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.google.android.gms:play-services:8.4.0'
     //compile 'com.pubnub:pubnub-android:3.7.6'   // get the pubnub sdk
     compile 'com.pubnub:pubnub-android-debug:3.7.+' //For the debug version
 
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.google.android.gms:play-services:8.4.0'
+
     //compile 'com.android.support:design:23.1.1'
 
     // Testing dependencies
@@ -42,3 +43,4 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:23.1.1'
 
 }
+

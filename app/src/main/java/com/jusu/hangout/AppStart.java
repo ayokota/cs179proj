@@ -73,12 +73,18 @@ public class AppStart extends AppCompatActivity {
                     accountInfo.edit().putString("gcmtoken", token).apply();
                     //intent.putExtra("gcmToken", token);
                     Log.i("main", token);
+
+
+                    /*---------------- add gcm token to pubnub ------------------*/
+
+
+
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }}).start();
-        Intent intent = new Intent(AppStart.this, LoginPage.class);
-        startActivity(intent);
+
 
 
 
