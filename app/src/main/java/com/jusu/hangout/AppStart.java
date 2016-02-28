@@ -75,11 +75,23 @@ public class AppStart extends AppCompatActivity {
                     Log.i("main", token);
 
 
+//                    /*---------------- add gcm token to pubnub ------------------*/
+//                    String url = "";
+//                    String status = "";
+//
+//                    //http://pubsub.pubnub.com/v1/push/sub-key/<SUB_KEY>/devices/<REG_ID>?<OPERATION>=<CHANNEL_LIST>&type=<TYPE>
+//
+//                    url += "http://pubsub.pubnub.com/v1/push/sub-key/";
+//                    url += "sub-c-caec8254-d91f-11e5-8758-02ee2ddab7fe"; //subkey
+//                    url += "/devices/";
+//                    url += token; //gcm token
+//                    url += "?add=";
+//                    url += ""; //channel list
+//                    url += "&type=gcm";
+//
+//
+//                    status = new httpClient().Post(url, "");
                     /*---------------- add gcm token to pubnub ------------------*/
-
-
-
-                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

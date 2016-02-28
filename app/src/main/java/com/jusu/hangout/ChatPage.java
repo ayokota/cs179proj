@@ -1,8 +1,13 @@
 package com.jusu.hangout;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -218,6 +223,10 @@ public class ChatPage extends AppCompatActivity {
         listView.setSelection(beans.size() - 1);
 
         pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);    //Pubnub Setup
+        pubnub.enablePushNotificationsOnChannel(
+                accountInfo.getString("username", ""),
+                accountInfo.getString("gcmtoken", ""));
+
         subscribeMessage(accountInfo.getString("username", ""),"text");                                 //Pubnub subscribe function---------------------------------------------!!Pubnub Subscribe
     }
 
@@ -274,7 +283,7 @@ public class ChatPage extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "发送内容不能为空 !", Toast.LENGTH_SHORT).show();
                     } else {
                         adapter.addItemNotifiChange(new Bean(txt, R.drawable.userphoto, new Date() + "", 0));
-                        publishMessage("reno",txt);
+                        publishMessage("reno", txt);
 //                        publishMessage("demotest",txt);
                         edt.setText("");
                         listView.setSelection(beans.size() - 1);
@@ -341,6 +350,7 @@ public class ChatPage extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(message.toString());
 
                                 Log.i("text内容", jsonObject.getString(wantedMsg));
+                                sendNotification(jsonObject.getString(wantedMsg));
                                 currentChatMsg = jsonObject.getString(wantedMsg);
 
                                 handler.post(runnableUi);
@@ -365,6 +375,27 @@ public class ChatPage extends AppCompatActivity {
         }
 
     }
+    private void sendNotification(String message) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                .setContentTitle("Hangout Chat Message")
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
     //Pubnub Publish function
     public void publishMessage(String publishChannel, String textmessage) {
         /* Publish a simple message to the demo_tutorial channel */
