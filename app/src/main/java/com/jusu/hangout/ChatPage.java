@@ -3,6 +3,8 @@ package com.jusu.hangout;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioRecord;
+import android.media.AudioTrack;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -74,7 +76,7 @@ public class ChatPage extends AppCompatActivity {
     private EditText editChatText;
     private RelativeLayout functionNavi;
 
-    private Handler handler=null;
+    private Handler handler=null;                   //pass message from sub Thread to UI thread
 
     public void moveUp(View view) {
 
