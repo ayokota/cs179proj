@@ -263,7 +263,7 @@ public class MainContent extends AppCompatActivity {
             viewHolder.name = (TextView) layoutView.findViewById(R.id.name);
             viewHolder.picture.setImageResource(Integer.parseInt(data.get(position).get("imageView").toString()));
             viewHolder.number.setText(data.get(position).get("id").toString());
-            Log.e("id", data.get(position).get("name").toString());
+//            Log.e("id", data.get(position).get("name").toString());
             viewHolder.name.setText(data.get(position).get("name").toString());
             return layoutView;
         }

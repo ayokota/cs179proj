@@ -134,7 +134,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-//                    System.out.println("handler back!");
                     break;
                 case 2:
                     try {
@@ -142,6 +141,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    break;
             }
         }
     };
@@ -481,19 +481,25 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                 message.what = 1;
                 uihandler.sendMessage(message);
 
-            } else {
+            } else if ((lat != null)&&(lng != null)){
                 Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
                 message.what = 2;
                 uihandler.sendMessage(message);
             }
+
+
             //publishMessage("locationtest", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
-            publishMessage("locationtest", Double.toString(lat), Double.toString(lng));
-            //publishMessage("reno", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
-            try {
-                Thread.currentThread().sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+            if ((lat != null)&&(lng != null)) {
+                publishMessage("locationtest", Double.toString(lat), Double.toString(lng));
+                try {
+                    Thread.currentThread().sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+            //publishMessage("reno", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
+
         }
     }
     class recordSound implements Runnable{
