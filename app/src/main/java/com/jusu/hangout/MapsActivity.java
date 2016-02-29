@@ -17,6 +17,7 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
@@ -99,6 +100,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     private Thread record;
     private Thread play;
     private boolean voice_flag = false;
+    private SoundPool soundpool;
     /************Variables for Walkie Talkie:end****************/
 
     /************Variables for MapUpdate Talkie:start**************/
@@ -157,8 +159,12 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 //        Handler pubnubHandler = new Handler();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mMap.setMyLocationEnabled(true);
 
-        provider = locationManager.getBestProvider(new Criteria(), false);
+        provider = locationManager.NETWORK_PROVIDER;
+//                getBestProvider(new Criteria(), false);
+        // Register the listener with the Location Manager to receive location updates
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
@@ -199,10 +205,9 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         mapUpdater = new Thread(new updateMap()); //Todo Thread for map udate
         mapUpdater.start();                     //Todo Thread for map udate
 
-        talkButton = (Button) findViewById(R.id.starttalkbutton);
-//        ButtonListener b = new ButtonListener();
-//        talkButton.setOnTouchListener(b);
+//        soundpool = new SoundPool.Builder
 
+        talkButton = (Button) findViewById(R.id.starttalkbutton);
         talkButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
@@ -213,29 +218,18 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
                             if (event.getAction() == MotionEvent.ACTION_UP) {
                                 Log.d("test", "cansal button ---> cancel");
                                 voice_flag = false;
-//                        record.interrupt();
-
-//                    try {
-//                        record.join();
-//                        System.out.println("Join is actived!");
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
                             }
                             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                                 Log.d("test", "cansal button ---> down");
                                 voice_flag = true;
-//                        record.run();
                                 record.run();
                             }
                         }
                     }
                 }).start();
                 return false;
-
             }
         });
-
     }                                                                                           // TODO OnCreate----------------------------------------^
 
     @Override
@@ -508,6 +502,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         @Override
         public void run() {
             Log.i(TAG, "........startRecordSound run()......");
+            boolean endFlag = false;
             byte[] bytes_pkg;
             // 开始录音
             m_in_rec.startRecording();
@@ -523,7 +518,13 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
                 String voiceString = bytesToHexString(m_in_q.getFirst());
 
-                publishVoice(accountInfo.getString("username", ""),voiceString);
+                publishVoice(accountInfo.getString("username", ""), voiceString);
+                endFlag=true;
+            }
+            if (endFlag) {
+                publishVoice(accountInfo.getString("username", ""), "0000000000");
+                endFlag=false;
+                m_in_q = new LinkedList<byte[]>();
             }
             m_in_rec.startRecording();
         }
@@ -626,6 +627,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        m_in_rec.release();
+        m_out_trk.release();
         setContentView(R.layout.view_null);
         Log.i("onDestroy", "!!!!!!!!!!!!");
     }

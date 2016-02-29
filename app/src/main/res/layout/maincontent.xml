@@ -193,43 +193,6 @@
         android:layout_below="@+id/title_bar"
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
-        android:id="@+id/hangOutLayout"
-        android:visibility="invisible">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imgBoot"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:scaleType="fitCenter"
-            android:padding="80dp"
-            android:src="@drawable/signaltower" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start Location Broadcast"
-            android:id="@+id/button2"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_alignBottom="@+id/imgBoot"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/button_blue_color"
-            android:textColor="#ffffff"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:onClick="pressToBroadcastLocation" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/title_bar"
-        android:layout_alignParentEnd="false"
-        android:layout_above="@+id/bottom_navi"
         android:id="@+id/meLayout"
         android:visibility="invisible">
 
@@ -370,6 +333,79 @@
             android:layout_marginRight="10dp"
             android:onClick="logOut" />
 
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/title_bar"
+        android:layout_alignParentEnd="false"
+        android:layout_above="@+id/bottom_navi"
+        android:id="@+id/hangOutLayout"
+        android:visibility="invisible">
+
+        <SearchView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="#ffffff" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/searchView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="#1f36cc">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hosting Event"
+                    android:id="@+id/textView4"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:layout_marginTop="13dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:id="@+id/eventCancel"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    Edit    "
+                    android:id="@+id/eventSetButton"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/eventCancel"
+                    android:layout_toStartOf="@+id/eventCancel" />
+
+            </RelativeLayout>
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventListView" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

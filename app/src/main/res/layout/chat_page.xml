@@ -104,7 +104,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
-        android:layout_alignParentEnd="false">
+        android:layout_alignParentEnd="false"
+        android:visibility="visible">
 
         <EditText
             android:layout_width="fill_parent"
