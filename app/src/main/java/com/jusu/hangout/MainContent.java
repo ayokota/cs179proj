@@ -26,12 +26,18 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.pubnub.api.Pubnub;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainContent extends AppCompatActivity {
+
+    String PUBLISH_KEY = "pub-c-6e01a57a-404e-4fdd-9283-5fd4782be8f5";
+    String SUBSCRIBE_KEY = "sub-c-caec8254-d91f-11e5-8758-02ee2ddab7fe";
+    Pubnub pubnub;
 
     ListView chatListView;
 
@@ -134,6 +140,40 @@ public class MainContent extends AppCompatActivity {
         setContentView(R.layout.maincontent);
 
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+//        /*---------------- add gcm token to pubnub ------------------*/
+        pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
+        pubnub.enablePushNotificationsOnChannel(
+                accountInfo.getString("username", ""),
+                accountInfo.getString("gcmtoken", ""));
+
+//        new Thread(new Runnable() {
+//            public void run() {
+//                try {
+//                    String url = "";
+//                    String status = "";
+//
+//                    //http://pubsub.pubnub.com/v1/push/sub-key/<SUB_KEY>/devices/<REG_ID>?<OPERATION>=<CHANNEL_LIST>&type=<TYPE>
+//
+//                    url += "http://pubsub.pubnub.com/v1/push/sub-key/";
+//                    url += "sub-c-caec8254-d91f-11e5-8758-02ee2ddab7fe"; //subkey
+//                    url += "/devices/";
+//                    url += accountInfo.getString("gcmtoken", ""); //gcm token
+//                    url += "?add=";
+//                    url += accountInfo.getString("username", ""); //channel list
+//                    url += "&type=gcm";
+//
+//                    Log.i("mainContent", url);
+//                    status = new httpClient().Post(url, "");
+//                    Log.i("mainContent", status);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+        /*---------------- add gcm token to pubnub ------------------*/
+
+
+
 //        String username = accountInfo.getString("username", "");                                                   //get account info in local storage
         userName = (TextView) findViewById(R.id.userNameTextView);
         fullName = (TextView) findViewById(R.id.fullNameTextView);

@@ -3,5 +3,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_location_broadcast">Map</string>
     <string name="gcm_defaultSenderId">1076861619588</string>
+    <string name="google_app_id">1076861619588</string>
     <string name="title_activity_get_gcm_token">getGcmToken</string>
 </resources>

@@ -111,6 +111,10 @@
             </intent-filter>
         </service>
         <!-- [END instanceId_listener] -->
+        <service
+            android:name="com.jusu.hangout.GcmRegistrationIntentService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>
