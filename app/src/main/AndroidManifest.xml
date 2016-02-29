@@ -136,6 +136,8 @@
             android:exported="false"></service>
 
         <activity android:name=".SetUpEvent"></activity>
+        <activity android:name=".AddFriend"></activity>
+
     </application>
 
 </manifest>

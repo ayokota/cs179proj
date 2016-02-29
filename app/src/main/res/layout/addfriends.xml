@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/titlebar"
+        android:id="@+id/relativeLayout4"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="22sp"
+            android:textColor="#ffffff"
+            android:text="Add Friend"
+            android:id="@+id/textView5"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView7"
+            android:src="@drawable/return_arrow"
+            android:onClick="returnBack"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="507dp"
+        android:layout_below="@+id/title_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout3"
+        android:visibility="visible"
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="false"
+            android:background="@drawable/underline"
+            android:hint="Username"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/AddUser"
+            android:layout_below="@+id/textView3"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Username you want to add"
+            android:layout_alignLeft="@+id/AddUser"
+            android:layout_marginTop="25dp"
+            android:id="@+id/textView3" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/Submit"
+            android:background="@drawable/button_activity"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/AddUser"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/AddUser"
+            android:layout_alignStart="@+id/AddUser"
+            android:layout_alignRight="@+id/AddUser"
+            android:layout_alignEnd="@+id/AddUser"
+            android:layout_marginTop="40dp" />
+    </RelativeLayout>
+</LinearLayout>
