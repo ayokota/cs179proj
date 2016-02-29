@@ -48,14 +48,13 @@ public class MainContent extends AppCompatActivity {
 
     String username = "";
     RelativeLayout chatLayout, contactsLayout, hangOutLayout, meLayout;
-
+    //final Button AddFriends = (Button)findViewById(R.id.AddFriend);
     ArrayList<HashMap<String, Object>> hashData;
     ArrayList<HashMap<String, Object>> contactsData;
     public static int contactcount = 0 ;
     public static String contacthold = "";
     public static String status = "";
     public static int contactstart = 0;
-    Button Acc, Rej;
     //final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
 
     public void clickFunction(View view) {
@@ -117,6 +116,12 @@ public class MainContent extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    public void AddFriend(View view) {
+        Intent intent = new Intent(MainContent.this, AddFriend.class);
+        intent.putExtra("settings", "password");
+        startActivity(intent);
+        finish();
+    }
 
     public void changUserFullName(View view) {
         Intent intent = new Intent(MainContent.this, AccountSettings.class);
@@ -124,6 +129,14 @@ public class MainContent extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
+    /*public void AddFriendName(View view) {
+        Intent intent = new Intent(MainContent.this, AddFriend.class);
+        intent.putExtra("settings", "fullname");
+        startActivity(intent);
+        finish();
+    }*/
 
     public void logOut (View view) {
 
@@ -167,9 +180,7 @@ public class MainContent extends AppCompatActivity {
         contactsListView = (ListView) findViewById(R.id.contactsListView);
 
         changeFullName = (TextView) findViewById(R.id.changfullname);
-
         changePassword = (TextView) findViewById(R.id.changepassword);
-
         if (accountInfo.getString("fromsetting", "").equals("true") == true) {
                 tapTab3.setImageResource(R.mipmap.tabbar_me_hl);
                 tapTab1.setImageResource(R.mipmap.tabbar_contacts);
@@ -221,6 +232,37 @@ public class MainContent extends AppCompatActivity {
                 finish();
             }
         });
+       /* AddFriends.setOnClickListener(new Button.OnClickListener()) {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainContent.this, AddFriend.class);
+                intent.putExtra("settings", "fullname");
+                startActivity(intent);
+                finish();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };*/
+       /* Button AddFriends = (Button)findViewById(R.id.AddFriend);
+        AddFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //notifyDataSetChanged();
+                Intent intent = new Intent(MainContent.this, AddFriend.class);
+                startActivity(intent);
+                finish();
+            }
+        });*/
+        /*public void addfrienduser(View view) {
+            Intent intent = new Intent(this, AddFriend.class);
+
+            startActivity(intent);
+            finish();
+        }*/
+
+
         /*
         setContentView(R.layout.custom_contact_layout);
         Button deleteBtn = (Button)findViewById(R.id.reject_btn);
@@ -366,8 +408,8 @@ public class MainContent extends AppCompatActivity {
             Log.e("id", data.get(position).get("name").toString());
             viewHolder.name.setText(data.get(position).get("name").toString());
             if(data.get(position).get("name").toString().equals("accepted")){
-                viewHolder.add.setVisibility(View.VISIBLE);
-                viewHolder.delete.setVisibility(View.VISIBLE);}
+                viewHolder.add.setVisibility(View.INVISIBLE);
+                viewHolder.delete.setVisibility(View.INVISIBLE);}
             else{
                 viewHolder.add.setVisibility(View.VISIBLE);
                 viewHolder.delete.setVisibility(View.VISIBLE);}
@@ -383,7 +425,7 @@ public class MainContent extends AppCompatActivity {
                    // final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
                     username = accountInfo.getString("username", "");
                     System.out.println(username);
-                    params.put("user1", "ayoko001");// change later rn only for ayoko001
+                    params.put("user1", accountInfo.getString("username",""));// change later rn only for ayoko001
                     params.put("user2", data.get(position).get("id").toString()); // gets users of current spot
                     params.put("status", "rejected");
                     final String json = new Gson().toJson(params);
@@ -413,7 +455,7 @@ public class MainContent extends AppCompatActivity {
                     // final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
                     username = accountInfo.getString("username", "");
                     System.out.println(username);
-                    params.put("user1", "ayoko001");// change later rn only for ayoko001
+                    params.put("user1", accountInfo.getString("username",""));// change later rn only for ayoko001
                     params.put("user2", data.get(position).get("id").toString());
                     params.put("status", "accepted");
                     final String json = new Gson().toJson(params);
@@ -482,7 +524,7 @@ public class MainContent extends AppCompatActivity {
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
         username = accountInfo.getString("username", "");
         System.out.println(username);
-        params.put("user1", "ayoko001");// change later rn only for ayoko001
+        params.put("user1", accountInfo.getString("username",""));// change later rn only for ayoko001
         final String json = new Gson().toJson(params);
         System.out.println(json);
         new Thread(new Runnable() {

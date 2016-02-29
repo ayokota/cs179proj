@@ -165,17 +165,31 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/title_bar"
         android:layout_alignParentEnd="false"
         android:layout_above="@+id/bottom_navi"
         android:id="@+id/contactsLayout"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:layout_alignParentTop="true">
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/contactsListView" />
+            android:id="@+id/contactsListView"
+            android:layout_below="@+id/AddFriend" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Friend"
+            android:id="@+id/AddFriend"
+            android:background="@drawable/button_blue_color"
+            android:textColor="#ffffff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_alignTop="@+id/textView2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="AddFriend" />
 
 
     </RelativeLayout>

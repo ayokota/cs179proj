@@ -58,6 +58,8 @@
             android:label="@string/title_activity_location_broadcast" />
         <activity android:name=".SignUp" />
         <activity android:name=".AccountSettings"></activity>
+        <activity android:name=".AddFriend"></activity>
+
     </application>
 
 </manifest>
