@@ -143,6 +143,9 @@
                   android:screenOrientation="portrait"/>
         <activity android:name=".EventTracking"
                   android:screenOrientation="portrait"></activity>
+        <activity android:name=".EditEvent"></activity>
+        <activity android:name=".CreateEvent"></activity>
+
     </application>
 
 </manifest>

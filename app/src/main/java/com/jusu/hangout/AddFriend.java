@@ -44,6 +44,14 @@ public class AddFriend extends AppCompatActivity {
     /**************Handler update UI:end********************/
     String addusername= "";
     boolean userName = false;
+    public void returnBack(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, MainContent.class);
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //To load and update the account info
+        accountInfo.edit().putString("fromsetting", "true").apply();
+        startActivity(intent);
+        finish();}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

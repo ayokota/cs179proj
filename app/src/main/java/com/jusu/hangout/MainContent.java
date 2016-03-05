@@ -56,7 +56,6 @@ public class MainContent extends AppCompatActivity {
 
 
     RelativeLayout chatLayout, contactsLayout, hangOutLayout, meLayout;
-    //final Button AddFriends = (Button)findViewById(R.id.AddFriend);
 
     ArrayList<HashMap<String, Object>> contactsData;
     public static int contactcount = 0 ;
@@ -114,24 +113,41 @@ public class MainContent extends AppCompatActivity {
         }
     }
 
-
-    public void AddFriend(View view) {
+    public void hostEventView(View view){
         Intent intent = new Intent(MainContent.this, EventTracking.class);
-//        Intent intent = new Intent(MainContent.this, AddFriend.class);
-        intent.putExtra("settings", "password");
+//        intent.putExtra("settings", "password");
+        contactstart = 2;
+        startActivity(intent);
+        finish();
+    }
+
+    public void AttendEventView(View view){
+        Intent intent = new Intent(MainContent.this, EventInfo.class);
+//        intent.putExtra("settings", "password");
+        contactstart = 2;
         startActivity(intent);
         finish();
     }
 
 
-
-    /*public void AddFriendName(View view) {
+    public void AddFriend(View view) {
         Intent intent = new Intent(MainContent.this, AddFriend.class);
-        intent.putExtra("settings", "fullname");
+        intent.putExtra("settings", "password");
         startActivity(intent);
         finish();
-    }*/
-
+    }
+    public void EditEvent(View view) {
+        contactstart = 2;
+        Intent intent = new Intent(MainContent.this, EditEvent.class);
+        startActivity(intent);
+        finish();
+    }
+    public void CreateEvent(View view) {
+        contactstart = 2;
+        Intent intent = new Intent(MainContent.this, CreateEvent.class);
+        startActivity(intent);
+        finish();
+    }
 
 
     public void pressToBroadcastLocation(View view) {
@@ -222,6 +238,17 @@ public class MainContent extends AppCompatActivity {
             contactsLayout.setVisibility(View.VISIBLE);
             chatLayout.setVisibility(View.INVISIBLE);
             hangOutLayout.setVisibility(View.INVISIBLE);
+            meLayout.setVisibility(View.INVISIBLE);
+        }
+        if (contactstart == 2)
+        {
+            tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
+            tapTab1.setImageResource(R.mipmap.tabbar_contacts);
+            tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
+            tapTab3.setImageResource(R.mipmap.tabbar_me);
+            hangOutLayout.setVisibility(View.VISIBLE);
+            contactsLayout.setVisibility(View.INVISIBLE);
+            chatLayout.setVisibility(View.INVISIBLE);
             meLayout.setVisibility(View.INVISIBLE);
         }
         final CustomSimpleAdapter customSimpleAdapter = new CustomSimpleAdapter( MainContent.this, getHashMapData(), R.layout.custom_list_layout);
