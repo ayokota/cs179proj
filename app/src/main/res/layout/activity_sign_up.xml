@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#eee"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/titlebar"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="22sp"
+            android:textColor="#ffffff"
+            android:text="Welcome"
+            android:id="@+id/textView"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_centerVertical="true"
+            android:src="@drawable/return_arrow"
+            android:onClick="returnBack" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relativeLayout">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:background="@drawable/underline"
+            android:hint="Password"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPassword"
+            android:id="@+id/password"
+            android:layout_below="@+id/username"
+            android:layout_marginTop="5dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:background="@drawable/underline"
+            android:hint="Full Name"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/fullname"
+            android:layout_below="@+id/password"
+            android:layout_marginTop="5dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:background="@drawable/underline"
+            android:hint="Username"
+            android:textColorHint="#a6b1c8"
+            android:alpha="0.5"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPersonName"
+            android:id="@+id/username"
+            android:layout_marginTop="20dp" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fullname"
+            android:id="@+id/sex"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:id="@+id/f"
+                android:checked="false"
+                android:layout_alignTop="@+id/sex"
+                android:layout_toRightOf="@+id/m"
+                android:layout_toEndOf="@+id/m"
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp"
+                android:textSize="15dp"
+                android:textColor="#A6B1C8" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:id="@+id/m"
+                android:checked="false"
+                android:layout_alignTop="@+id/sex"
+                android:layout_toRightOf="@+id/sex"
+                android:layout_toEndOf="@+id/sex"
+                android:layout_marginLeft="30dp"
+                android:textSize="15dp"
+                android:textColor="#A6B1C8" />
+
+        </RadioGroup>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/passwordsubmit"
+            android:background="@drawable/button_activity"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/sex"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/username"
+            android:layout_alignStart="@+id/username"
+            android:layout_alignRight="@+id/username"
+            android:layout_alignEnd="@+id/username"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continuing means you've read and agreed to our Terms of Service and Privacy Policy"
+            android:layout_below="@+id/passwordsubmit"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/username"
+            android:layout_alignStart="@+id/username"
+            android:layout_alignRight="@+id/username"
+            android:layout_alignEnd="@+id/username"
+            android:id="@+id/textView10"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginRight="-5dp" />
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/pwVisibleButton"
+            android:src="@drawable/password_hide"
+            android:background="#00ffffff"
+            android:scaleType="centerInside"
+            android:layout_alignBottom="@+id/password"
+            android:layout_alignRight="@+id/password"
+            android:layout_alignEnd="@+id/password"
+            android:layout_marginBottom="2dp"
+            android:onClick="onClick" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

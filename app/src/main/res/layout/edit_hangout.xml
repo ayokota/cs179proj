@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/titlebar"
+        android:id="@+id/relativeLayout5">
+
+        <ImageView
+            android:layout_width="46dp"
+            android:layout_height="53dp"
+            android:id="@+id/imageView8"
+            android:src="@drawable/return_arrow"
+            android:onClick="returnBack"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="22sp"
+            android:textColor="#ffffff"
+            android:text="HangOut"
+            android:id="@+id/textView6"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#bedaf1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Keyword:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/keytext"
+            android:layout_marginTop="55dp"
+            android:layout_below="@+id/textView8"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Topic:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/topictext"
+            android:layout_below="@+id/keytext"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/timetext"
+            android:layout_below="@+id/topictext"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/loctext"
+            android:layout_below="@+id/timetext"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="false"
+            android:background="@drawable/edittextfile"
+            android:ellipsize="start"
+            android:gravity="center"
+            android:hint="Enter Keyword"
+            android:alpha="0.5"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/keywordedit"
+            android:layout_alignTop="@+id/keytext"
+            android:layout_above="@+id/topicedit"
+            android:layout_toRightOf="@+id/keytext"
+            android:layout_toEndOf="@+id/keytext" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="false"
+            android:background="@drawable/edittextfile"
+            android:ellipsize="start"
+            android:gravity="center"
+            android:hint="Enter Topic"
+            android:alpha="0.5"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/topicedit"
+            android:layout_toEndOf="@+id/topictext"
+            android:layout_below="@+id/keytext"
+            android:layout_alignBottom="@+id/topictext"
+            android:layout_toRightOf="@+id/topictext" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:textColor="#000"
+            android:textColorHint="#a6b1c8"
+            android:textSize="16sp"
+            android:singleLine="false"
+            android:background="@drawable/edittextfile"
+            android:ellipsize="start"
+            android:gravity="center"
+            android:hint="Enter Location"
+            android:alpha="0.5"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/locationedit"
+            android:layout_alignTop="@+id/loctext"
+            android:layout_toEndOf="@+id/loctext"
+            android:layout_alignBottom="@+id/loctext"
+            android:layout_toRightOf="@+id/loctext" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:id="@+id/updatebutton"
+            android:background="@drawable/button_activity"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/locationedit"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="33dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittextfile"
+            android:ellipsize="start"
+            android:gravity="center"
+            android:id="@+id/timeedit"
+            android:layout_above="@+id/loctext"
+            android:layout_toRightOf="@+id/timetext"
+            android:layout_below="@+id/topictext"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textColorHint="#a6b1c8"
+            android:textColor="#000"
+            android:alpha="0.5"
+            android:hint="Enter Time"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#7ad0ff"
+            android:layout_above="@+id/keywordedit"
+            android:id="@+id/relativeLayout7">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Event"
+                android:textSize="40sp"
+                android:textColor="#ffffff"
+                android:id="@+id/textView8"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
