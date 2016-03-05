@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -40,6 +41,7 @@ import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -460,7 +462,7 @@ public class ChatPage extends AppCompatActivity {
             e.printStackTrace();
         }
         pubnub.publish(publishChannel, jsonObject, callback);
-        //GCM_send(friendGCMtoken, textmessage);
+        GCM_send(friendGCMtoken, textmessage);
         recordChat(username, textmessage);
 
     }
@@ -505,7 +507,7 @@ public class ChatPage extends AppCompatActivity {
         String GCMMsg = "";
 
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
-        String username = accountInfo.getString("username", "");
+        String username = accountInfo.getString("username","");
         Map<String, String> params = new HashMap<String, String>();
         params.put("user", friendname);// change later rn only for ayoko001
         params.put("message", textMessage);// change later rn only for ayoko001
