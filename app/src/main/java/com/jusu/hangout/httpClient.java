@@ -68,8 +68,8 @@ public class httpClient {
         try {
             URL url = new URL(u);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(30000);
+            conn.setConnectTimeout(3000);
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);

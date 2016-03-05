@@ -27,10 +27,12 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.pubnub.api.Pubnub;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -483,104 +485,33 @@ public class MainContent extends AppCompatActivity {
     }
 
     //binding the data and images use the custom adapter defined by myself
-
     private ArrayList<HashMap<String, Object>> getHashMapData() {
         hashData = new ArrayList<HashMap<String, Object>>();
-        for (int i = 0; i < 4; i++) {
-            HashMap<String, Object> mItem = new HashMap<String, Object>();
-            mItem.put("id", "Number：" + i);
-            mItem.put("name", "Name" + i);
-            switch (i % 5) {
-                case 0:
-                    mItem.put("imageView", R.drawable.text_people_1);
-                    break;
-                case 1:
-                    mItem.put("imageView", R.drawable.text_people_2);
-                    break;
-                case 2:
-                    mItem.put("imageView", R.drawable.text_people_3);
-                    break;
-                case 3:
-                    mItem.put("imageView", R.drawable.text_people_4);
-                    break;
-                case 4:
-                    mItem.put("imageView", R.drawable.text_people_5);
-                    break;
-                default:
-                    mItem.put("imageView", R.drawable.text_people_6);
-                    break;
-            }
-            hashData.add(mItem);
-        }
-        return hashData;
-
-    }
-    public static int count(String s, char c) {
-        return s.length()==0 ? 0 : (s.charAt(0)==c ? 1 : 0) + count(s.substring(1),c);
-    }
-// creating contacts list from server
-    private ArrayList<HashMap<String, Object>> getContactMapData() {
-        contactsData = new ArrayList<HashMap<String, Object>>();
-        Map<String, String> params = new HashMap<String, String>();
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
-        username = accountInfo.getString("username", "");
-        System.out.println(username);
+
+        Map<String, String> params = new HashMap<String, String>();
         params.put("user1", accountInfo.getString("username",""));// change later rn only for ayoko001
         final String json = new Gson().toJson(params);
-        System.out.println(json);
+
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts",json);
-                    result = result.substring(1,result.length()-1);
-                    System.out.println(result);
-                    contactcount = count(result, ',');
-                    for (int i = 0; i < contactcount+1; i++) {
-                        HashMap<String, Object> mItem = new HashMap<String, Object>();
-                        if (result.contains(":")){
-                            contacthold= result.substring(1, result.indexOf(":")-1);
-                            if (i < contactcount) {
-                                status = result.substring(result.indexOf(":") + 2, result.indexOf(",") - 1);
-                            }
-                            else
-                                status = result.substring(result.indexOf(":") + 2, result.length()-1);
+                    String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts", json);
+                    //System.out.println("healdsfjalsjfdlsafasdf!!!!!!!!!!!!!!!!!!!" + json);
+                    Log.i("main content", result);
+
+                    Type type = new TypeToken<Map<String,String>>(){}.getType();
+                    Map<String,String> resultMap = new Gson().fromJson(result, Map.class);
+                    int i = 0;
+                    for(String user: resultMap.keySet()) {
+                        if(resultMap.get(user).equals("accepted")) {
+                            HashMap<String, Object> mItem = new HashMap<String, Object>();
+                            mItem.put("id", user);
+                            mItem.put("name", user);
+                            mItem.put("imageView", R.drawable.default_prof);
+                            hashData.add(mItem);
                         }
-                        if (result.contains(",")) {
-                            result = result.substring(result.indexOf(",") + 1, result.length());
-                        }
-                        System.out.println(result);
-                        System.out.println(contacthold);
-                        System.out.println(status);
-                        mItem.put("id", contacthold);
-                        mItem.put("name", status);
-                        switch (i % 5) {
-                            case 0:
-                                mItem.put("imageView", R.drawable.text_people_1);
-                                break;
-                            case 1:
-                                mItem.put("imageView", R.drawable.text_people_2);
-                                break;
-                            case 2:
-                                mItem.put("imageView", R.drawable.text_people_3);
-                                break;
-                            case 3:
-                                mItem.put("imageView", R.drawable.text_people_4);
-                                break;
-                            case 4:
-                                mItem.put("imageView", R.drawable.text_people_5);
-                                break;
-                            default:
-                                mItem.put("imageView", R.drawable.text_people_6);
-                                break;
-                        }
-                        if (status=="accepted")
-                            mItem.put("status", '0');
-                        else if (status == "requested")
-                            mItem.put("status", '1');
-                        contactsData.add(mItem);
                     }
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -588,10 +519,65 @@ public class MainContent extends AppCompatActivity {
         }).start();
 
 
-
-        return contactsData;
+        return hashData;
 
     }
+    public static int count(String s, char c) {
+        return s.length()==0 ? 0 : (s.charAt(0)==c ? 1 : 0) + count(s.substring(1),c);
+    }
+// creating contacts list from server
+// creating contacts list from server
+    private ArrayList<HashMap<String, Object>> getContactMapData() {
+        contactsData = new ArrayList<HashMap<String, Object>>();
+        Map<String, String> params = new HashMap<String, String>();
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+        username = accountInfo.getString("username", "");
+        params.put("user1", accountInfo.getString("username", ""));// change later rn only for ayoko001
+        final String json = new Gson().toJson(params);
+        new Thread(new Runnable() {
+        public void run() {
+            try {
+                String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts",json);
+                result = result.substring(1,result.length()-1);
+                contactcount = count(result, ',');
+                for (int i = 0; i < contactcount+1; i++) {
+                    HashMap<String, Object> mItem = new HashMap<String, Object>();
+                    if (result.contains(":")){
+                        contacthold= result.substring(1, result.indexOf(":")-1);
+                        if (i < contactcount) {
+                            status = result.substring(result.indexOf(":") + 2, result.indexOf(",") - 1);
+                        }
+                        else
+                            status = result.substring(result.indexOf(":") + 2, result.length()-1);
+                    }
+                    if (result.contains(",")) {
+                        result = result.substring(result.indexOf(",") + 1, result.length());
+                    }
+
+                    mItem.put("id", contacthold);
+                    mItem.put("name", status);
+
+                    mItem.put("imageView", R.drawable.default_prof);
+
+                    if (status=="accepted")
+                        mItem.put("status", '0');
+                    else if (status == "requested")
+                        mItem.put("status", '1');
+                    contactsData.add(mItem);
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }).start();
+
+
+
+    return contactsData;
+
+}
 
     
     @Override
