@@ -349,7 +349,7 @@ public class ChatPage extends AppCompatActivity {
                             try {
                                 JSONObject jsonObject = new JSONObject(message.toString());
 
-                                Log.i("text内容", jsonObject.getString(wantedMsg));
+                                Log.i("Text Content:", jsonObject.getString(wantedMsg));
                                 sendNotification(jsonObject.getString(wantedMsg));
                                 currentChatMsg = jsonObject.getString(wantedMsg);
 

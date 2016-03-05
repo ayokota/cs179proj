@@ -116,7 +116,8 @@ public class MainContent extends AppCompatActivity {
 
 
     public void AddFriend(View view) {
-        Intent intent = new Intent(MainContent.this, AddFriend.class);
+        Intent intent = new Intent(MainContent.this, EventTracking.class);
+//        Intent intent = new Intent(MainContent.this, AddFriend.class);
         intent.putExtra("settings", "password");
         startActivity(intent);
         finish();
@@ -329,7 +330,7 @@ public class MainContent extends AppCompatActivity {
 
             viewHolder.picture.setImageResource(Integer.parseInt(data.get(position).get("imageView").toString()));
             viewHolder.number.setText(data.get(position).get("id").toString());
-            Log.e("id", data.get(position).get("name").toString());
+//            Log.e("id", data.get(position).get("name").toString());
             viewHolder.name.setText(data.get(position).get("name").toString());
             return layoutView;
         }

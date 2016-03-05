@@ -39,7 +39,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:paddingBottom="2dp">
+            android:paddingBottom="2dp"
+            android:baselineAligned="false">
 
 
             <LinearLayout
@@ -176,21 +177,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/contactsListView"
-            android:layout_below="@+id/AddFriend" />
+            android:layout_below="@+id/hideList" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Friend"
-            android:id="@+id/AddFriend"
-            android:background="@drawable/button_blue_color"
+            android:layout_height="45dp"
+            android:text="+Friend"
+            android:id="@+id/hideList"
+            android:background="@drawable/addfriendbg"
             android:textColor="#ffffff"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:paddingRight="10dp"
-            android:layout_alignTop="@+id/textView2"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:onClick="AddFriend" />
+            android:onClick="AddFriend"
+            android:layout_alignParentStart="false" />
 
 
     </RelativeLayout>
