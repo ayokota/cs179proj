@@ -502,19 +502,37 @@ public class ChatPage extends AppCompatActivity {
                 }
             }
         }).start();
+        Log.i("check gcm token", accountInfo.getString("temp",""));
         return accountInfo.getString("temp","");
+    }
+
+    public String buildGcmMsg(String textMessage) {
+        String GCMMsg = "";
+
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+        String username = accountInfo.getString("username","");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("user", friendname);// change later rn only for ayoko001
+        params.put("message", textMessage);// change later rn only for ayoko001
+
+        Pair GCMPackage = new Pair ("message", new Gson().toJson(params));
+        GCMMsg = new Gson().toJson(GCMPackage);
+
+        return GCMMsg;
     }
 
     public void GCM_send(String GCMtoken, String textMessage) {
         final String message = textMessage;
         final String token = GCMtoken;
-        Log.i("gcm_send", token);
+        System.out.println(token);
         new Thread(new Runnable() {
             public void run() {
                 try {
                     // Prepare JSON containing the GCM message content. What to send and where to send.
                     JSONObject jGcmData = new JSONObject();
                     JSONObject jData = new JSONObject();
+                    //jData.put("message", buildGcmMsg(message));
+
                     jData.put("message", message);
 
                     jGcmData.put("to", token);
