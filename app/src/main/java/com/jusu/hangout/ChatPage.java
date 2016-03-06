@@ -141,6 +141,7 @@ public class ChatPage extends AppCompatActivity {
 
         String key = "chat:" + accountInfo.getString("username","");
         accountInfo.edit().putString(key, new Gson().toJson(chatHistory)).apply();
+        accountInfo.edit().putString("msg", "0").apply();
 
         startActivity(intent);
         finish();
@@ -170,6 +171,7 @@ public class ChatPage extends AppCompatActivity {
 
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
 
+        accountInfo.edit().putString("msg", "1").apply();
 
         chatHistory = new HashMap<String, List<Pair>>();
 
@@ -201,7 +203,7 @@ public class ChatPage extends AppCompatActivity {
 
         Intent i = getIntent();
         friendname = i.getStringExtra("name");
-        friendGCMtoken = getGCMtoken(friendname);
+        friendGCMtoken = getGCMtoken(friendname).trim();
         chatTitle.setText(friendname);
 
         editChatText.addTextChangedListener(new TextWatcher() {
@@ -260,9 +262,9 @@ public class ChatPage extends AppCompatActivity {
         listView.setSelection(beans.size() - 1);
 
         pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);    //Pubnub Setup
-        pubnub.enablePushNotificationsOnChannel(
-                accountInfo.getString("username", ""),
-                accountInfo.getString("gcmtoken", ""));
+//        pubnub.enablePushNotificationsOnChannel(
+//                accountInfo.getString(friendname, ""),
+//                accountInfo.getString(friendGCMtoken, ""));
 
         subscribeMessage(accountInfo.getString("username", ""),"text");                                 //Pubnub subscribe function---------------------------------------------!!Pubnub Subscribe
     }
@@ -445,6 +447,7 @@ public class ChatPage extends AppCompatActivity {
     public void publishMessage(String publishChannel, String textmessage) {
         /* Publish a simple message to the demo_tutorial channel */
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+
         String username = accountInfo.getString("username", "");
         Callback callback = new Callback() {
             public void successCallback(String channel, Object response) {
@@ -509,7 +512,7 @@ public class ChatPage extends AppCompatActivity {
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
         String username = accountInfo.getString("username","");
         Map<String, String> params = new HashMap<String, String>();
-        params.put("user", friendname);// change later rn only for ayoko001
+        params.put("user", accountInfo.getString("username", ""));// change later rn only for ayoko001
         params.put("message", textMessage);// change later rn only for ayoko001
 
         Pair GCMPackage = new Pair ("message", new Gson().toJson(params));
@@ -520,17 +523,21 @@ public class ChatPage extends AppCompatActivity {
 
     public void GCM_send(String GCMtoken, String textMessage) {
         final String message = textMessage;
-        final String token = GCMtoken;
+        final String token = getGCMtoken(friendname);
         System.out.println(token);
+        Log.i("gcm token", token);
         new Thread(new Runnable() {
             public void run() {
                 try {
                     // Prepare JSON containing the GCM message content. What to send and where to send.
                     JSONObject jGcmData = new JSONObject();
                     JSONObject jData = new JSONObject();
-                    //jData.put("message", buildGcmMsg(message));
 
-                    jData.put("message", message);
+                    String messageJson = buildGcmMsg(message);
+                    Log.i("gcm_send", messageJson);
+                    jData.put("message", messageJson);
+
+                    //jData.put("message", message);
 
                     jGcmData.put("to", token);
                     //jGcmData.put("to", "cwcUHSvZ4n4:APA91bFc4E3UIaLiVOZ3O8dHTuPhf2MVnQLmyn8J2V-n7ognmddKEo42PbAFMyk6cl916sXJ_7pspm3M357nzEvE5KvD7306qhkj8VCxS6OW1JHdouxN5fbjM0_zd6ydQ2opKDzkY-3O");
@@ -589,6 +596,8 @@ public class ChatPage extends AppCompatActivity {
 
         String key = "chat:" + accountInfo.getString("username","");
         accountInfo.edit().putString(key, new Gson().toJson(chatHistory)).apply();
+        accountInfo.edit().putString("msg", "0").apply();
+
         Log.i("onDestroy", "!!!!!!!!!!!!");
     }
 }
