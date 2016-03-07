@@ -165,7 +165,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 //        Handler pubnubHandler = new Handler();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mMap.setMyLocationEnabled(true);
+//        mMap.setMyLocationEnabled(true);
 
         provider = locationManager.NETWORK_PROVIDER;
 //                getBestProvider(new Criteria(), false);
@@ -348,6 +348,10 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 //                                    + message.getClass() + " : " + message.toString());
                             try {
                                 jsonObjectMessage = new JSONObject(message.toString());
+//                                latFriend = Double.valueOf(jsonObjectMessage.getString("locationlat"));
+//                                lngFriend = Double.valueOf(jsonObjectMessage.getString("locationlng"));
+//                                Log.i("getlat",jsonObjectMessage.getString("locationlat"));
+//                                Log.i("getlng",jsonObjectMessage.getString("locationlng"));
                                 m_out_bytes = hexStringToByteArray(jsonObjectMessage.getString("voc"));
                                 jsonObjectMessage.remove("voc");
                                 //pubnubHandler.post(runnableUi);
@@ -466,40 +470,47 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     class updateMap implements Runnable {
         @Override
         public void run() {
-            if(jsonObjectMessage != null) {
-                try {
+            while (handler_flag) {
+                if(jsonObjectMessage != null) {
+//                if ((latFriend != null) && (lngFriend != null)) {
+                    try {
                     latFriend = Double.valueOf(jsonObjectMessage.getString("locationlat"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
+//                        Log.i("latFriend", jsonObjectMessage.getString("locationlat"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
                     lngFriend = Double.valueOf(jsonObjectMessage.getString("locationlng"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+//                        Log.i("lngFriend", jsonObjectMessage.getString("locationlng"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+                    message.what = 1;
+                    Log.i("from update map", "message 1");
+                    uihandler.sendMessage(message);
+
+                } else if ((lat != null) && (lng != null)) {
+                    Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+                    message.what = 2;
+                    Log.i("from update map", "message 2");
+                    uihandler.sendMessage(message);
+
                 }
-                Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
-                message.what = 1;
-                uihandler.sendMessage(message);
-
-            } else if ((lat != null)&&(lng != null)){
-                Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
-                message.what = 2;
-                uihandler.sendMessage(message);
-            }
 
 
-            //publishMessage("locationtest", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
+                //publishMessage("locationtest", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
 
-            if ((lat != null)&&(lng != null)) {
-                publishMessage(friendname, Double.toString(lat), Double.toString(lng));
-                try {
-                    Thread.currentThread().sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if ((lat != null) && (lng != null)) {
+                    publishMessage(friendname, Double.toString(lat), Double.toString(lng));
+                    try {
+                        Thread.currentThread().sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                //publishMessage("reno", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
             }
-            //publishMessage("reno", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
-
         }
     }
     class recordSound implements Runnable{
@@ -524,11 +535,11 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
                 String voiceString = bytesToHexString(m_in_q.getFirst());
 
-                publishVoice(accountInfo.getString(friendname, ""), voiceString);                   //Todo change the "username" to friendname
+                publishVoice(friendname, voiceString);                   //Todo change the "username" to friendname
                 endFlag=true;
             }
             if (endFlag) {
-                publishVoice(accountInfo.getString(friendname, ""), "0000000000");                  //Todo change the "username" to friendname
+                publishVoice(friendname, "0000000000");                  //Todo change the "username" to friendname
                 endFlag=false;
                 m_in_q = new LinkedList<byte[]>();
             }
