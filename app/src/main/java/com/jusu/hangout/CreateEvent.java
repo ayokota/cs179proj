@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.gson.Gson;
 import com.jusu.hangout.MainContent;
 import com.jusu.hangout.R;
 
@@ -22,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Sivart Nahp on 3/3/2016.
@@ -38,7 +41,7 @@ public class CreateEvent extends AppCompatActivity {
     }
     String time;
     Date date;
-    SimpleDateFormat sdfr = new SimpleDateFormat("dd/MMM/yyyy");
+    SimpleDateFormat sdfr = new SimpleDateFormat("yyyy-MM-dd");
     String Keyword, Datetime, Topic, Location;
 
     boolean KeyBool = false;
@@ -142,16 +145,36 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
-
         createbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("Keyword: " + Keyword + " Topic:" + Topic + " Time" + Datetime + "Loc: " + Location);
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("host", accountInfo.getString("username", ""));
+                params.put("topic", Topic);
+                params.put("keyword", Keyword);
+                params.put("time", Datetime);
+                params.put("location", Location);
+                final String json = new Gson().toJson(params);
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+
+
                 Intent intent = new Intent();
                 intent.setClass(CreateEvent.this, MainContent.class);
                 startActivity(intent);
                 finish();
             }
         });
+
         timeedit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialogView.findViewById(R.id.date_time_set).
