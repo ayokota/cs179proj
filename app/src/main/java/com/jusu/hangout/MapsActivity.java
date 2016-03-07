@@ -72,6 +72,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
     Boolean SSL = false;
     Pubnub pubnub;
 
+    String friendname = "";
+
     boolean handler_flag = true;
 
     Handler handler = new Handler();
@@ -153,6 +155,10 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        Intent i = getIntent();
+        friendname = i.getStringExtra("name");
+
 
         accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
 
@@ -318,28 +324,28 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
                         @Override
                         public void connectCallback(String channel, Object message) {
-                            System.out.println("SUBSCRIBE : CONNECT on channel:" + channel
-                                    + " : " + message.getClass() + " : "
-                                    + message.toString());
+//                            System.out.println("SUBSCRIBE : CONNECT on channel:" + channel
+//                                    + " : " + message.getClass() + " : "
+//                                    + message.toString());
                         }
 
                         @Override
                         public void disconnectCallback(String channel, Object message) {
-                            System.out.println("SUBSCRIBE : DISCONNECT on channel:" + channel
-                                    + " : " + message.getClass() + " : "
-                                    + message.toString());
+//                            System.out.println("SUBSCRIBE : DISCONNECT on channel:" + channel
+//                                    + " : " + message.getClass() + " : "
+//                                    + message.toString());
                         }
 
                         public void reconnectCallback(String channel, Object message) {
-                            System.out.println("SUBSCRIBE : RECONNECT on channel:" + channel
-                                    + " : " + message.getClass() + " : "
-                                    + message.toString());
+//                            System.out.println("SUBSCRIBE : RECONNECT on channel:" + channel
+//                                    + " : " + message.getClass() + " : "
+//                                    + message.toString());
                         }
 
                         @Override
                         public void successCallback(String channel, Object message) {
-                            System.out.println("SUBSCRIBE : " + channel + " : "
-                                    + message.getClass() + " : " + message.toString());
+//                            System.out.println("SUBSCRIBE : " + channel + " : "
+//                                    + message.getClass() + " : " + message.toString());
                             try {
                                 jsonObjectMessage = new JSONObject(message.toString());
                                 m_out_bytes = hexStringToByteArray(jsonObjectMessage.getString("voc"));
@@ -353,8 +359,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
                         @Override
                         public void errorCallback(String channel, PubnubError error) {
-                            System.out.println("SUBSCRIBE : ERROR on channel " + channel
-                                    + " : " + error.toString());
+//                            System.out.println("SUBSCRIBE : ERROR on channel " + channel
+//                                    + " : " + error.toString());
                         }
                     }
             );
@@ -369,11 +375,11 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         /* Publish a simple message to the demo_tutorial channel */
         Callback callback = new Callback() {
             public void successCallback(String channel, Object response) {
-                System.out.println(response.toString());
+//                System.out.println(response.toString());
             }
 
             public void errorCallback(String channel, PubnubError error) {
-                System.out.println(error.toString());
+//                System.out.println(error.toString());
             }
         };
         JSONObject jsonObject = new JSONObject();
@@ -432,7 +438,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 //        bt_exit.setOnClickListener(this);
 
         // AudioRecord 得到录制最小缓冲区的大小
-        m_in_buf_size = AudioRecord.getMinBufferSize(8000,
+        m_in_buf_size = AudioRecord.getMinBufferSize(8000,                                          //Todo change the bit rate
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
         // 实例化播放音频对象
@@ -518,15 +524,15 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
                 String voiceString = bytesToHexString(m_in_q.getFirst());
 
-                publishVoice(accountInfo.getString("username", ""), voiceString);
+                publishVoice(accountInfo.getString("username", ""), voiceString);                   //Todo change the "username" to friendname
                 endFlag=true;
             }
             if (endFlag) {
-                publishVoice(accountInfo.getString("username", ""), "0000000000");
+                publishVoice(accountInfo.getString("username", ""), "0000000000");                  //Todo change the "username" to friendname
                 endFlag=false;
                 m_in_q = new LinkedList<byte[]>();
             }
-            m_in_rec.startRecording();
+//            m_in_rec.startRecording();
         }
     }
 
@@ -578,17 +584,17 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         /* Publish a simple message to the demo_tutorial channel */
         Callback callback = new Callback() {
             public void successCallback(String channel, Object response) {
-                System.out.println(response.toString());
+//                System.out.println(response.toString());
             }
 
             public void errorCallback(String channel, PubnubError error) {
-                System.out.println(error.toString());
+//                System.out.println(error.toString());
             }
         };
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("voc",voicemessage);
-            System.out.println(jsonObject);
+            jsonObject.put("voc", voicemessage);
+//            System.out.println(jsonObject);
 
             pubnub.publish(publishChannel, jsonObject, callback);
         } catch (JSONException e) {
