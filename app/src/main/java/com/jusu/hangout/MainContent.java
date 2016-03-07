@@ -493,7 +493,7 @@ public class MainContent extends AppCompatActivity {
         params.put("user1", accountInfo.getString("username",""));// change later rn only for ayoko001
         final String json = new Gson().toJson(params);
 
-        new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             public void run() {
                 try {
                     String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts", json);
@@ -516,9 +516,14 @@ public class MainContent extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
+        try {
+            t.start();
 
-
+            t.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return hashData;
 
     }
@@ -527,14 +532,14 @@ public class MainContent extends AppCompatActivity {
     }
 // creating contacts list from server
 // creating contacts list from server
-    private ArrayList<HashMap<String, Object>> getContactMapData() {
+    private ArrayList<HashMap<String, Object>> getContactMapData()   {
         contactsData = new ArrayList<HashMap<String, Object>>();
         Map<String, String> params = new HashMap<String, String>();
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
         username = accountInfo.getString("username", "");
         params.put("user1", accountInfo.getString("username", ""));// change later rn only for ayoko001
         final String json = new Gson().toJson(params);
-        new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
         public void run() {
             try {
                 String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts",json);
@@ -571,8 +576,14 @@ public class MainContent extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }).start();
+    });
+    try {
+        t.start();
 
+        t.join();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 
 
     return contactsData;
@@ -584,6 +595,7 @@ public class MainContent extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         setContentView(R.layout.view_null);
+        
         Log.i("onDestroy","!!!!!!!!!!!!");
     }
 }
