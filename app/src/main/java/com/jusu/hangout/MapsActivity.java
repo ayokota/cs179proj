@@ -491,7 +491,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
             //publishMessage("locationtest", Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
 
             if ((lat != null)&&(lng != null)) {
-                publishMessage("locationtest", Double.toString(lat), Double.toString(lng));
+                publishMessage(friendname, Double.toString(lat), Double.toString(lng));
                 try {
                     Thread.currentThread().sleep(5000);
                 } catch (InterruptedException e) {
@@ -524,11 +524,11 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 
                 String voiceString = bytesToHexString(m_in_q.getFirst());
 
-                publishVoice(accountInfo.getString("username", ""), voiceString);                   //Todo change the "username" to friendname
+                publishVoice(accountInfo.getString(friendname, ""), voiceString);                   //Todo change the "username" to friendname
                 endFlag=true;
             }
             if (endFlag) {
-                publishVoice(accountInfo.getString("username", ""), "0000000000");                  //Todo change the "username" to friendname
+                publishVoice(accountInfo.getString(friendname, ""), "0000000000");                  //Todo change the "username" to friendname
                 endFlag=false;
                 m_in_q = new LinkedList<byte[]>();
             }
