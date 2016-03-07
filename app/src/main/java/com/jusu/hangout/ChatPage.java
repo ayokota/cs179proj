@@ -526,7 +526,7 @@ public class ChatPage extends AppCompatActivity {
         final String token = getGCMtoken(friendname);
         System.out.println(token);
         Log.i("gcm token", token);
-        new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             public void run() {
                 try {
                     // Prepare JSON containing the GCM message content. What to send and where to send.
@@ -573,7 +573,13 @@ public class ChatPage extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
+        try {
+            t.start();
+            t.join();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
