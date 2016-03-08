@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="41dp"
+        android:layout_height="45dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/titlebar"
         android:id="@+id/relativeLayout5">
@@ -29,7 +29,7 @@
             android:layout_centerInParent="true"
             android:textSize="22sp"
             android:textColor="#ffffff"
-            android:text="HangOut"
+            android:text="Edit Event"
             android:id="@+id/textView6"
             android:layout_centerHorizontal="true" />
 
@@ -40,54 +40,20 @@
         android:layout_height="match_parent"
         android:background="#bedaf1">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Keyword:"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/keytext"
-            android:layout_marginTop="55dp"
-            android:layout_below="@+id/textView8"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Topic:"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/topictext"
-            android:layout_below="@+id/keytext"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time:"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/timetext"
-            android:layout_below="@+id/topictext"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location:"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/loctext"
-            android:layout_below="@+id/timetext"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
+            android:text="Update"
+            android:id="@+id/updatebutton"
+            android:background="@drawable/button_activity"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
         <EditText
             android:layout_width="fill_parent"
-            android:layout_height="45dp"
+            android:layout_height="49dp"
             android:textColor="#000"
             android:textColorHint="#a6b1c8"
             android:textSize="16sp"
@@ -100,14 +66,16 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/keywordedit"
-            android:layout_alignTop="@+id/keytext"
-            android:layout_above="@+id/topicedit"
-            android:layout_toRightOf="@+id/keytext"
-            android:layout_toEndOf="@+id/keytext" />
+            android:layout_alignTop="@+id/keytxt"
+            android:layout_toEndOf="@+id/keytxt"
+            android:layout_alignLeft="@+id/topicedit"
+            android:layout_alignStart="@+id/topicedit"
+            android:layout_above="@+id/topictxt"
+            android:layout_marginRight="5dp" />
 
         <EditText
             android:layout_width="fill_parent"
-            android:layout_height="45dp"
+            android:layout_height="49dp"
             android:textColor="#000"
             android:textColorHint="#a6b1c8"
             android:textSize="16sp"
@@ -120,14 +88,16 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/topicedit"
-            android:layout_toEndOf="@+id/topictext"
-            android:layout_below="@+id/keytext"
-            android:layout_alignBottom="@+id/topictext"
-            android:layout_toRightOf="@+id/topictext" />
+            android:layout_toEndOf="@+id/topictxt"
+            android:layout_alignBottom="@+id/topictxt"
+            android:layout_alignLeft="@+id/timeedit"
+            android:layout_alignStart="@+id/timeedit"
+            android:layout_alignTop="@+id/topictxt"
+            android:layout_marginRight="5dp" />
 
         <EditText
             android:layout_width="fill_parent"
-            android:layout_height="45dp"
+            android:layout_height="49dp"
             android:textColor="#000"
             android:textColorHint="#a6b1c8"
             android:textSize="16sp"
@@ -140,61 +110,84 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/locationedit"
-            android:layout_alignTop="@+id/loctext"
-            android:layout_toEndOf="@+id/loctext"
-            android:layout_alignBottom="@+id/loctext"
-            android:layout_toRightOf="@+id/loctext" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            android:id="@+id/updatebutton"
-            android:background="@drawable/button_activity"
-            android:textColor="#ffffff"
-            android:layout_below="@+id/locationedit"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="33dp" />
+            android:layout_toEndOf="@+id/locationtxt"
+            android:layout_alignBottom="@+id/locationtxt"
+            android:layout_toRightOf="@+id/locationtxt"
+            android:layout_alignTop="@+id/locationtxt"
+            android:layout_marginRight="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Keyword:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/keytxt"
+            android:layout_below="@+id/textView20"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Topic:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/topictxt"
+            android:layout_below="@+id/keytxt"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/timetxt"
+            android:layout_below="@+id/topictxt"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:id="@+id/locationtxt"
+            android:layout_below="@+id/timetxt"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
             android:background="@drawable/edittextfile"
             android:ellipsize="start"
             android:gravity="center"
             android:id="@+id/timeedit"
-            android:layout_above="@+id/loctext"
-            android:layout_toRightOf="@+id/timetext"
-            android:layout_below="@+id/topictext"
+            android:layout_above="@+id/locationtxt"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:textColorHint="#a6b1c8"
             android:textColor="#000"
             android:alpha="0.5"
             android:hint="Enter Time"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_toRightOf="@+id/locationtxt"
+            android:layout_toEndOf="@+id/locationtxt"
+            android:layout_alignTop="@+id/timetxt"
+            android:layout_marginRight="5dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="#7ad0ff"
-            android:layout_above="@+id/keywordedit"
-            android:id="@+id/relativeLayout7">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit Event"
-                android:textSize="40sp"
-                android:textColor="#ffffff"
-                android:id="@+id/textView8"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true" />
-        </RelativeLayout>
 
     </RelativeLayout>
 

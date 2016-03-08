@@ -236,6 +236,8 @@ public class MainContent extends AppCompatActivity implements LocationListener {
         if (location != null) {
             lat = location.getLatitude();
             lng = location.getLongitude();
+            accountInfo.edit().putString("mylat", lat.toString()).apply();  //store the user's latitude
+            accountInfo.edit().putString("mylng", lng.toString()).apply();  //store the user's longtitude
 
             Thread t = new Thread(new Runnable() {
                 public void run() {
@@ -755,6 +757,8 @@ public class MainContent extends AppCompatActivity implements LocationListener {
 
         lat = location.getLatitude();
         lng = location.getLongitude();
+        accountInfo.edit().putString("mylat", lat.toString()).apply();  //store the user's latitude
+        accountInfo.edit().putString("mylng", lng.toString()).apply();  //store the user's longtitude
 
         Thread t = new Thread(new Runnable() {
             public void run() {

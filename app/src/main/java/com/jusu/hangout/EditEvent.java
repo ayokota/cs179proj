@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -47,9 +48,10 @@ public class EditEvent extends AppCompatActivity {
     boolean KeyBool = false;
     boolean DateBool = false;
     boolean TopicBool = false;
-    boolean LocBool = false;
+//    boolean LocBool = false;
     private boolean canEdit() {
-        return KeyBool && DateBool && TopicBool && LocBool;
+        return KeyBool && DateBool && TopicBool;
+//        return KeyBool && DateBool && TopicBool && LocBool;
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,8 @@ public class EditEvent extends AppCompatActivity {
         final Button updatebutton = (Button) findViewById(R.id.updatebutton);
         final TextView timeedit=(TextView) this.findViewById(R.id.timeedit);
         updatebutton.setEnabled(false);
+        locationed.setText(accountInfo.getString("mylat", "") + " " + accountInfo.getString("mylng", ""));
+
         keyworded.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -158,17 +162,17 @@ public class EditEvent extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    LocBool = true;
-                } else
-                    LocBool = false;
-
-                Location = s.toString();
-                if (canEdit()) {
-                    updatebutton.setEnabled(true);
-                } else {
-                    updatebutton.setEnabled(false);
-                }
+//                if (s.length() > 0) {
+//                    LocBool = true;
+//                } else
+//                    LocBool = false;
+//
+//                Location = s.toString();
+//                if (canEdit()) {
+//                    updatebutton.setEnabled(true);
+//                } else {
+//                    updatebutton.setEnabled(false);
+//                }
             }
         });
 
@@ -242,5 +246,12 @@ public class EditEvent extends AppCompatActivity {
 
     };
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setContentView(R.layout.view_null);
+        Log.i("onDestroy", "!!!!!!!!!!!!");
+    }
 }
 

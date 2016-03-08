@@ -88,7 +88,7 @@ public class httpClient {
 
 
             //String json = new Gson().toJson(json);
-            System.out.println(json);
+//            System.out.println(json);
             writer.write(json);
             writer.flush();
             writer.close();

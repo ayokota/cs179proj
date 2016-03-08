@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -34,8 +35,8 @@ public class CreateEvent extends AppCompatActivity {
     public void returnBack(View view) {
         Intent intent = new Intent();
         intent.setClass(this, MainContent.class);
-        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //To load and update the account info
-        accountInfo.edit().putString("fromsetting", "true").apply();
+//        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //To load and update the account info
+//        accountInfo.edit().putString("fromsetting", "true").apply();
         startActivity(intent);
         finish();
     }
@@ -47,9 +48,11 @@ public class CreateEvent extends AppCompatActivity {
     boolean KeyBool = false;
     boolean DateBool = false;
     boolean TopicBool = false;
-    boolean LocBool = false;
+//    boolean LocBool = false;
     private boolean canCreate() {
-        return KeyBool && DateBool && TopicBool && LocBool;
+        return KeyBool && DateBool && TopicBool;
+//        return KeyBool && DateBool && TopicBool && LocBool;
+
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,8 @@ public class CreateEvent extends AppCompatActivity {
         final Button createbutton = (Button) findViewById(R.id.createbut);
         final TextView timeedit=(TextView) this.findViewById(R.id.timeedt);
         createbutton.setEnabled(false);
+
+        locationed.setText(accountInfo.getString("mylat", "") + " " + accountInfo.getString("mylng", ""));
 
         keyworded.addTextChangedListener(new TextWatcher() {
             @Override
@@ -131,17 +136,17 @@ public class CreateEvent extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    LocBool = true;
-                } else
-                    LocBool = false;
-
-                Location = s.toString();
-                if (canCreate()) {
-                    createbutton.setEnabled(true);
-                } else {
-                    createbutton.setEnabled(false);
-                }
+//                if (s.length() > 0) {
+//                    LocBool = true;
+//                } else
+//                    LocBool = false;
+//
+//                Location = s.toString();
+//                if (canCreate()) {
+//                    createbutton.setEnabled(true);
+//                } else {
+//                    createbutton.setEnabled(false);
+//                }
             }
         });
 
@@ -213,6 +218,11 @@ public class CreateEvent extends AppCompatActivity {
 
 
     };
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setContentView(R.layout.view_null);
+        Log.i("onDestroy", "!!!!!!!!!!!!");
+    }
 }
 

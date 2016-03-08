@@ -34,7 +34,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="45dp"
-            android:text="Hide"
+            android:text="List"
             android:id="@+id/hideList"
             android:background="@drawable/addfriendbg"
             android:textColor="#ffffff"
@@ -58,13 +58,14 @@
         tools:context="com.jusu.hangout.EventInfo" />
 
     <RelativeLayout
-        android:layout_width="88dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/title_bar"
         android:background="#e8ffffff"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:gravity="center_vertical"
+        android:layout_alignParentRight="true"
         android:id="@+id/attendeesLayout">
 
         <ListView

@@ -382,28 +382,34 @@
                     android:textSize="20sp"
                     android:layout_below="@+id/searchView"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="5dp" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:text="Cancel"
                     android:id="@+id/eventCancel"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:textSize="12sp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#ffffff" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:text="    Edit    "
                     android:id="@+id/eventEditButton"
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/eventCancel"
                     android:layout_toStartOf="@+id/eventCancel"
-                    android:onClick="EditEvent" />
+                    android:onClick="EditEvent"
+                    android:textSize="12sp"
+                    android:textColor="#ffffff" />
 
                 <SearchView
                     android:layout_width="fill_parent"
@@ -415,14 +421,16 @@
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:text="View"
                     android:id="@+id/ViewUEvent"
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/eventEditButton"
                     android:layout_toStartOf="@+id/eventEditButton"
-                    android:onClick="hostEventView" />
+                    android:onClick="hostEventView"
+                    android:textSize="12sp"
+                    android:textColor="#ffffff" />
 
             </RelativeLayout>
 
@@ -439,23 +447,28 @@
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:text="cancel"
                     android:id="@+id/cancelgo"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:textSize="12sp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#ffffff" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:text="on/off"
                     android:id="@+id/onoff"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@+id/cancelgo"
-                    android:layout_toStartOf="@+id/cancelgo" />
+                    android:layout_toStartOf="@+id/cancelgo"
+                    android:textSize="12sp"
+                    android:textColor="#ffffff" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -466,18 +479,21 @@
                     android:textSize="20sp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="5dp" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:text="View"
                     android:id="@+id/ViewGoEvent"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@+id/onoff"
                     android:layout_toStartOf="@+id/onoff"
-                    android:onClick="AttendEventView" />
+                    android:onClick="AttendEventView"
+                    android:textSize="12sp"
+                    android:textColor="#ffffff" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -495,7 +511,7 @@
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="Create"
             android:id="@+id/button"
@@ -506,7 +522,10 @@
             android:minWidth="0dp"
             android:maxHeight="120dp"
             android:height="44dp"
-            android:onClick="CreateEvent" />
+            android:onClick="CreateEvent"
+            android:textColor="#ffffff"
+            android:layout_marginRight="5dp"
+            android:textSize="13sp" />
 
     </RelativeLayout>
 
