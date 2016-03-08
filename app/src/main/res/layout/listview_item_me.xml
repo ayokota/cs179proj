@@ -48,7 +48,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="top"
-                android:background="@drawable/headpic_init" />
+                android:background="@drawable/userphoto" />
         </LinearLayout>
     </RelativeLayout>
 

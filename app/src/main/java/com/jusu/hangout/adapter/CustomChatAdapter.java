@@ -92,7 +92,7 @@ public class CustomChatAdapter extends BaseAdapter {
 		s.time.setText(DateFomats.getCurrentTime(new Date().getTime()));
 //		System.out.println("time:"+ new Date().getTime());
 		s.message.setText(bean.gettMessage());
-		s.portrait.setImageResource(R.drawable.headpic_init);
+//		s.portrait.setImageResource(R.drawable.headpic_init);
 
 		return convertView;
 

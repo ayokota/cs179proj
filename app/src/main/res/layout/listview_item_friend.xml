@@ -26,15 +26,15 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/Time"
             android:gravity="left|center_vertical"
-            android:layout_marginRight="15dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dp">
 
             <ImageView
                 android:id="@+id/Img"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="top"
-                android:background="@drawable/headpic_init" />
+                android:background="@drawable/default_prof" />
             <TextView
                 android:id="@+id/Msg"
                 android:layout_width="wrap_content"
