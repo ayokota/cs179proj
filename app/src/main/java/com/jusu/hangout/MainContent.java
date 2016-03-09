@@ -65,6 +65,7 @@ public class MainContent extends AppCompatActivity {
     public static String status = "";
     public static int contactstart = 0;
     public static int create_hold = 0;
+    String ID = "";
 
     ArrayList<HashMap<String, Object>> hashData;
 
@@ -456,23 +457,46 @@ public class MainContent extends AppCompatActivity {
         final Button deletebutton = (Button) findViewById(R.id.eventCancel);
         deletebutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("delete", accountInfo.getString("temp", ""));
-                final String json = new Gson().toJson(params);
-                System.out.println(json);
-                Thread t= new Thread(new Runnable() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("host", accountInfo.getString("username", ""));
+
+                final String json = new Gson().toJson(params1);
+                Thread t = new Thread(new Runnable() {
                     public void run() {
                         try {
-                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json);
-                            System.out.println(result);
+                            String result2 = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json);
+                            Map<String, String> IDmap = new Gson().fromJson(result2, Map.class);
+                            ID = IDmap.get("id");
+                            System.out.println("check me"+ ID);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                try {
+                    t.start();
+                    t.join();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("delete", ID);
+                final String json1 = new Gson().toJson(params);
+                System.out.println(json1);
+                Thread t1= new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            String result1 = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json1);
+                            System.out.println(result1);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 });
                 try{
-                    t.start();
-                    t.join();
+                    t1.start();
+                    t1.join();
                 }
                 catch (Exception e) {
                     e.printStackTrace();
