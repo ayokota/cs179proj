@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/imageViewLayout"
+        android:layout_width="48dip"
+        android:layout_height="48dip"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="5dip">
+    </ImageView>
+
+    <TextView android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dip"
+        android:layout_toRightOf="@+id/imageViewLayout"
+        android:layout_alignTop="@+id/imageViewLayout">
+    </TextView>
+
+    <TextView android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10dip"
+        android:layout_toRightOf="@+id/imageViewLayout"
+        android:layout_below="@+id/number">
+    </TextView>
+    <Button
+        android:id="@+id/reject_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reject"
+        android:layout_alignTop="@+id/accept_btn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/accept_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accept"
+        android:layout_alignTop="@+id/number"
+        android:layout_toLeftOf="@+id/reject_btn"
+        android:layout_toStartOf="@+id/reject_btn" />
+
+
+</RelativeLayout>

@@ -1,0 +1,101 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/titlebar"
+        android:id="@+id/title_bar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="22sp"
+            android:textColor="#ffffff"
+            android:text="Event Details"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="49dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:src="@drawable/return_arrow"
+            android:onClick="returnBack"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/eventInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.55"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:background="#eee"
+        android:paddingRight="5dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Key"
+            android:layout_weight="0.25"
+            android:gravity="center|left"
+            android:id="@+id/textViewKey"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            android:background="@drawable/underline" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Topic"
+            android:gravity="center|left"
+            android:layout_weight="0.25"
+            android:id="@+id/textViewTopic"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            android:background="@drawable/underline" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:gravity="center|left"
+            android:layout_weight="0.25"
+            android:id="@+id/textViewTime"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            android:background="@drawable/underline" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:layout_weight="0.25"
+            android:gravity="center|left"
+            android:id="@+id/textViewLocation"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            android:background="@drawable/underline" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        tools:context="com.jusu.hangout.EventInfo" />
+    <!-- map:cameraTargetLat="40.72"
+        map:cameraTargetLng="-74.00"
+        map:cameraZoom="8"-->
+
+</LinearLayout>
