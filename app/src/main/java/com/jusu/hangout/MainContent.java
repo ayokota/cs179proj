@@ -747,7 +747,7 @@ public class MainContent extends AppCompatActivity implements LocationListener {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
+        locationManager.requestLocationUpdates(provider, 5000, 5, this);
     }
 
 

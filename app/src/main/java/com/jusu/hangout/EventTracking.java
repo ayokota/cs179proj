@@ -253,6 +253,64 @@ public class EventTracking extends FragmentActivity implements OnMapReadyCallbac
         });
     }
 
+//    private void MapRefresh() {
+//        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+//        Map<String, String> params = new HashMap<String, String>();
+//        params.put("check", addusername);
+//        final String json = new Gson().toJson(params);
+//        Thread t = new Thread(new Runnable() {
+//            public void run() {
+//                try {
+//                    String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts", json);
+//                    System.out.println(result);
+//                    if (result.equals("0")){
+//                        System.out.println("FAILED");}
+//                    else {
+//                        System.out.println("GOOD");
+//                        Map<String, String> param1 = new HashMap<String, String>();
+//                        param1.put("user1", accountInfo.getString("username", ""));
+//                        String json1 = new Gson().toJson(param1);
+//                        System.out.println(json1);
+//                        result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts", json1);
+//                        System.out.println(result);
+//                        Type type = new TypeToken<Map<String, String>>(){}.getType();
+//                        Map<String, String> input = new Gson().fromJson(result, Map.class);
+//                        if (input.containsKey(addusername))
+//                        {
+//                            System.out.println("Already In Friend List");
+//                            Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+//                            message.what = 2;
+//                            handlerAddFriend.sendMessage(message);
+//                            Toast.makeText(getApplicationContext(),"Already In Friend List!", Toast.LENGTH_LONG).show();
+//                        }
+//                        else{
+//                            System.out.println("Not in Friend List");
+//                            Map<String, String> param2 = new HashMap<String, String>();
+//                            param2.put("user1", accountInfo.getString("username", ""));
+//                            param2.put("user2", addusername);
+//                            param2.put("status", "requested");
+//                            String json2 = new Gson().toJson(param2);
+//                            System.out.println(json2);
+//                            result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts", json2);
+//                            Message message = new Message();//发送一个消息，该消息用于在handleMessage中区分是谁发过来的消息；
+//                            message.what = 1;
+//                            handlerAddFriend.sendMessage(message);
+////                                                    Toast.makeText(getApplicationContext(),"Request has been sent successfully!", Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//        try {
+//            t.start();
+//            t.join();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -277,6 +335,60 @@ public class EventTracking extends FragmentActivity implements OnMapReadyCallbac
 
     public void updateLocation() {                                                              // Todo UpdateLocation----------------------------------------!
         mMap.clear();
+
+        final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
+        final ArrayList<String> eventAttendees = new ArrayList<String>();
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                try {
+
+                    /*-------- obtaining attendeeList --------*/
+                    Map<String, String> getAttendeeMap = new HashMap<String, String>();
+                    getAttendeeMap.put("host", accountInfo.getString("username", ""));
+                    String getAttendeeMapJson = new Gson().toJson(getAttendeeMap);
+
+                    String eventResponse = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", getAttendeeMapJson);
+                    System.out.println(eventResponse);
+
+                    Map<String, String> eventMap = new Gson().fromJson(eventResponse, Map.class);
+
+                    /*
+                    eventMap.get("id");
+                    eventMap.get("host");
+                    eventMap.get("keyword");
+                    eventMap.get("topic");
+                    eventMap.get("time");
+                    */
+                    List<String> attendeeList = Arrays.asList(eventMap.get("attendees").split(" "));
+                    for(String attendee: attendeeList) {
+                        Map<String, String> attendee1Map = new HashMap<String, String>();
+                        attendee1Map.put("id", eventMap.get("id"));
+                        attendee1Map.put("attendee", attendee);
+                        String attendee1Json = new Gson().toJson(attendee1Map);
+                        String attendee1Response = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/tracking", attendee1Json);
+                        System.out.println("attendee1Response:"+ attendee1Response);
+                        attendeeLocation.put(attendee,attendee1Response);
+                        eventAttendees.add(attendee);
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        try {
+            t.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         ArrayList<Marker> markers = new ArrayList<Marker>();
 
@@ -329,7 +441,7 @@ public class EventTracking extends FragmentActivity implements OnMapReadyCallbac
             public void run() {
                 updateLocation();
             }
-        }, 10000);
+        }, 5000);
     }
 
 
