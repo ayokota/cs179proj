@@ -73,19 +73,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="33dp"
-            android:layout_alignTop="@+id/textView21" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Keyword:"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/textView17"
-            android:layout_marginTop="55dp"
-            android:layout_below="@+id/textView23"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_below="@+id/textView18"
+            android:onClick="JoinEvent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -94,51 +83,9 @@
             android:textSize="24sp"
             android:textColor="#000000"
             android:id="@+id/textView18"
-            android:layout_below="@+id/textView17"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time:"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/textView19"
-            android:layout_below="@+id/textView18"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location:"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/textView21"
-            android:layout_below="@+id/textView19"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/loctext"
-            android:layout_alignBottom="@+id/textView21"
-            android:layout_toRightOf="@+id/textView21"
-            android:layout_toEndOf="@+id/textView21" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/Keywrdtxt"
-            android:layout_above="@+id/textView18"
-            android:layout_toRightOf="@+id/textView17"
-            android:layout_toEndOf="@+id/textView17" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView23" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -147,16 +94,6 @@
             android:textColor="#000000"
             android:id="@+id/topictxt"
             android:layout_alignBottom="@+id/textView18"
-            android:layout_toRightOf="@+id/textView18"
-            android:layout_toEndOf="@+id/textView18" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="#000000"
-            android:id="@+id/timetxt"
-            android:layout_above="@+id/joinbut"
             android:layout_toRightOf="@+id/textView18"
             android:layout_toEndOf="@+id/textView18" />
 

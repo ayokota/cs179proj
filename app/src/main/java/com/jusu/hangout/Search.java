@@ -98,6 +98,7 @@ public class Search extends AppCompatActivity {
          */
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            final SharedPreferences accountInfo = context.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
             View layoutView = convertView;
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             layoutView = layoutInflater.inflate(layoutResource, null);
@@ -110,10 +111,8 @@ public class Search extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     setContentView(R.layout.eventinformation);
-                    final TextView Keyword = (TextView) findViewById(R.id.Keywrdtxt);
                     final TextView Topic = (TextView) findViewById(R.id.topictxt);
-                    final TextView Time = (TextView) findViewById(R.id.timetxt);
-                    final TextView Location = (TextView) findViewById(R.id.loctext);
+                    final Button join = (Button) findViewById(R.id.joinbut);
                     //SearchData = new ArrayList<HashMap<String, Object>>();
                     //Map<String, String> params = new HashMap<String, String>();
                     //params.put("search", data.get(position).get("").toString());
@@ -126,7 +125,28 @@ public class Search extends AppCompatActivity {
                     //String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts",json);
                     //      SearchMap.putAll(new Gson().fromJson(result, Map.class));
                     //        for (String key : SearchMap.keySet()) {
-                    Keyword.setText(data.get(position).get("name").toString());
+                    Topic.setText(data.get(position).get("name").toString());
+                    join.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("id", data.get(position).get("id").toString());
+                            params.put("attendee", accountInfo.getString("username",""));
+                            final String json = new Gson().toJson(params);
+                            System.out.println(json);
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    try {
+                                        String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/attendee",json);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).start();
+                            Intent intent = new Intent(Search.this, MainContent.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
                     //    }
                     //} catch (Exception e) {
                     //    e.printStackTrace();
@@ -169,6 +189,7 @@ public class Search extends AppCompatActivity {
                     for (String key : SearchMap.keySet()) {
                         HashMap<String, Object> mItem = new HashMap<String, Object>();
                         mItem.put("name", key);
+                        mItem.put("id", SearchMap.get(key));
                         System.out.println(key);
                         SearchData.add(mItem);
                     }

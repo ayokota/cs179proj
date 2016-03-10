@@ -74,6 +74,8 @@ public class GcmMessageReceiver extends GcmListenerService {
             } else {
                 chatHistory = new HashMap<String, List<Pair>>();
             }
+            sendNotification(msg.get("message"));
+
             recordChat(friendname,msg.get("message"));
             System.out.println(new Gson().toJson(chatHistory));
             accountInfo.edit().putString(key, new Gson().toJson(chatHistory)).apply();
@@ -92,7 +94,6 @@ public class GcmMessageReceiver extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
         // [END_EXCLUDE]
     }
     // [END receive_message]
@@ -103,7 +104,7 @@ public class GcmMessageReceiver extends GcmListenerService {
      * @param message GCM message received.
      */
     private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainContent.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

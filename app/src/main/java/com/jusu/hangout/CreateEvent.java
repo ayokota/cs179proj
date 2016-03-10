@@ -159,7 +159,7 @@ public class CreateEvent extends AppCompatActivity {
                 params.put("topic", Topic);
                 params.put("keyword", Keyword);
                 params.put("time", Datetime);
-                params.put("location", Location);
+                params.put("location", accountInfo.getString("mylat", "") + " " + accountInfo.getString("mylng", ""));
                 final String json = new Gson().toJson(params);
                 new Thread(new Runnable() {
                     public void run() {

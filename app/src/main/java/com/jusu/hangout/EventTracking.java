@@ -394,13 +394,18 @@ public class EventTracking extends FragmentActivity implements OnMapReadyCallbac
 
 
         for (String attendee : attendeeLocation.keySet()) {
-            String[] latlng = attendeeLocation.get(attendee).split(" ");
-            markers.add(mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(Double.parseDouble(latlng[0]), Double.parseDouble(latlng[1])))                             //.position(new LatLng(lat, lng))
-                    .icon(BitmapDescriptorFactory
-                            .defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    .title(attendee)));
+            Log.i("Atttt: ", attendee);
 
+            String[] latlng= {};
+            if (!attendeeLocation.get(attendee).equals("")) {
+                latlng = attendeeLocation.get(attendee).split(" ");
+
+                markers.add(mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(Double.parseDouble(latlng[0]), Double.parseDouble(latlng[1])))                             //.position(new LatLng(lat, lng))
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                        .title(attendee)));
+            }
         }
 
 

@@ -41,14 +41,14 @@ public class EditEvent extends AppCompatActivity {
     }
     String time;
     Date date;
-    SimpleDateFormat sdfr = new SimpleDateFormat("dd/MMM/yyyy");
+    SimpleDateFormat sdfr = new SimpleDateFormat("yyyy/MM/dd");
     String Keyword, Datetime, Topic, Location;
 
     String ID = "";
     boolean KeyBool = false;
     boolean DateBool = false;
     boolean TopicBool = false;
-//    boolean LocBool = false;
+    //    boolean LocBool = false;
     private boolean canEdit() {
         return KeyBool && DateBool && TopicBool;
 //        return KeyBool && DateBool && TopicBool && LocBool;
@@ -124,7 +124,7 @@ public class EditEvent extends AppCompatActivity {
                     updatebutton.setEnabled(false);
                 }
 
-                }
+            }
         });
         topiced.addTextChangedListener(new TextWatcher() {
             @Override
@@ -181,17 +181,41 @@ public class EditEvent extends AppCompatActivity {
             public void onClick(View v) {
                 System.out.println("Keyword: " + Keyword + " Topic:" + Topic + " Time" + Datetime + "Loc: " + Location);
                 Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("host", accountInfo.getString("username", ""));
+
+                final String json = new Gson().toJson(params1);
+                Thread t = new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            String result2 = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json);
+                            Map<String, String> IDmap = new Gson().fromJson(result2, Map.class);
+                            ID = IDmap.get("id");
+                            System.out.println("check me"+ ID);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                try {
+                    t.start();
+                    t.join();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 params.put("id", ID);
                 params.put("host", accountInfo.getString("username", ""));
                 params.put("topic", Topic);
                 params.put("keyword", Keyword);
                 params.put("time", Datetime);
                 params.put("location", Location);
-                final String json = new Gson().toJson(params);
+                final String json1 = new Gson().toJson(params);
+                System.out.println(json1);
                 new Thread(new Runnable() {
                     public void run() {
                         try {
-                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events",json);
+                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json1);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -254,4 +278,3 @@ public class EditEvent extends AppCompatActivity {
         Log.i("onDestroy", "!!!!!!!!!!!!");
     }
 }
-
