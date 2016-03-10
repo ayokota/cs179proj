@@ -1,5 +1,7 @@
 package com.jusu.hangout;
 
+import android.support.v7.app.AppCompatActivity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,6 +51,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
 public class MainContent extends AppCompatActivity implements LocationListener {
 
 
@@ -70,29 +73,21 @@ public class MainContent extends AppCompatActivity implements LocationListener {
     ImageView tapTab2;
     ImageView tapTab3;
 
-
     String username = "";
-    TextView changeFullName, changePassword, userName, fullName;
-
+    TextView changeFullName, changePassword,userName,fullName;
 
     RelativeLayout chatLayout, contactsLayout, hangOutLayout, meLayout;
 
     ArrayList<HashMap<String, Object>> contactsData;
-    public static int contactcount = 0;
+    public static int contactcount = 0 ;
     public static String contacthold = "";
     public static String status = "";
     public static int contactstart = 0;
-    //final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+    public static int create_hold = 0;
 
     ArrayList<HashMap<String, Object>> hashData;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     public void clickFunction(View view) {
-
         ImageView counter = (ImageView) view;
 
 //        System.out.println(counter.getTag().toString());
@@ -109,6 +104,75 @@ public class MainContent extends AppCompatActivity implements LocationListener {
             meLayout.setVisibility(View.INVISIBLE);
 
         } else if (tappedTag == 2) {
+            final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
+            Map<String, String> params1 = new HashMap<String, String>();
+            params1.put ("host", accountInfo.getString("username", "") );
+
+            final String json = new Gson().toJson(params1);
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        TextView Attendee = (TextView) findViewById(R.id.attnlist);
+                        String result1 = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events",json);
+                        Map<String, String> AttendeeMap= new Gson().fromJson(result1,Map.class);
+                        System.out.println(result1);
+                        System.out.println("Here we go: " + result1);
+                        if (AttendeeMap.get("attendees")== ""){
+                            {
+                                Attendee.setText("Hosting Event, No Attendees Yet");
+                            }
+                        }
+                        else{
+                            Attendee.setText(AttendeeMap.get("attendees"));}
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            try{
+                t.start();
+                t.join();
+            }
+         catch (Exception e) {
+            e.printStackTrace();
+        }
+
+            Map<String, String> params2 = new HashMap<String, String>();
+            params2.put("attendee", accountInfo.getString("username", ""));
+            final String json1 = new Gson().toJson(params2);
+            Thread t1 = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Type type = new TypeToken<List<Map<String,String>>>(){}.getType();
+                        TextView Attendee1 = (TextView) findViewById(R.id.attendinfo);
+                        //Attendee1.setText("Not Attending Any Events");
+                        String result2= new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json1);
+                        System.out.println(result2);
+                        List<Map<String, String>> AttendeeMap1= new Gson().fromJson(result2,type);
+                        String combine= "";
+                        for(Map<String, String> m : AttendeeMap1) {
+                            combine=m.get("host")+ "\n"+m.get("topic")+"\n"+ m.get("keyword")+"\n"+m.get("time");
+                        }
+                        System.out.println("print" + combine);
+                        if (!combine.equals("")){
+                            Attendee1.setText(combine);}
+                        else {
+                            Attendee1.setText("Not Attending Any Events");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            try{
+                t1.start();
+                t1.join();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -117,6 +181,7 @@ public class MainContent extends AppCompatActivity implements LocationListener {
             contactsLayout.setVisibility(View.INVISIBLE);
             chatLayout.setVisibility(View.INVISIBLE);
             meLayout.setVisibility(View.INVISIBLE);
+
         } else if (tappedTag == 3) {
             tapTab3.setImageResource(R.mipmap.tabbar_me_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
@@ -138,7 +203,7 @@ public class MainContent extends AppCompatActivity implements LocationListener {
         }
     }
 
-    public void hostEventView(View view) {
+    public void hostEventView(View view){
         Intent intent = new Intent(MainContent.this, EventTracking.class);
 //        intent.putExtra("settings", "password");
         contactstart = 2;
@@ -170,12 +235,15 @@ public class MainContent extends AppCompatActivity implements LocationListener {
     }
 
     public void CreateEvent(View view) {
-        contactstart = 2;
-        Intent intent = new Intent(MainContent.this, CreateEvent.class);
-        startActivity(intent);
-        finish();
+        TextView checkatt = (TextView) findViewById(R.id.attnlist);
+        String input = checkatt.getText().toString();
+        //contactstart = 2;
+        if(input.equals("Not Hosting Any Events")){
+            Intent intent = new Intent(MainContent.this, CreateEvent.class);
+            create_hold =1;
+            startActivity(intent);
+        finish();}
     }
-
 
     public void pressToBroadcastLocation(View view) {
         Intent intent = new Intent(MainContent.this, LocationBroadcastActivity.class);
@@ -196,8 +264,16 @@ public class MainContent extends AppCompatActivity implements LocationListener {
         startActivity(intent);
         finish();
     }
+    public void Search(View view) {
+        Intent intent = new Intent(MainContent.this, Search.class);
+        intent.putExtra("settings", "fullname");
+        startActivity(intent);
+        finish();
+    }
 
-    public void logOut(View view) {
+
+
+    public void logOut (View view) {
 
         SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE); //get account info in local storage
 
@@ -282,6 +358,9 @@ public class MainContent extends AppCompatActivity implements LocationListener {
 
         /*------ maps -------- */
 
+        TextView AttendeeI = (TextView) findViewById(R.id.attendinfo);
+        //AttendeeI.setText("Not Attending Any Events");
+
 //        /*---------------- add gcm token to pubnub ------------------*/
         pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
         pubnub.enablePushNotificationsOnChannel(
@@ -332,6 +411,76 @@ public class MainContent extends AppCompatActivity implements LocationListener {
             meLayout.setVisibility(View.INVISIBLE);
         }
         if (contactstart == 2) {
+        {
+            Map<String, String> params1 = new HashMap<String, String>();
+            params1.put ("host", accountInfo.getString("username", "") );
+
+            final String json = new Gson().toJson(params1);
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        TextView Attendee = (TextView) findViewById(R.id.attnlist);
+                        String result1 = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events",json);
+                        Map<String, String> AttendeeMap= new Gson().fromJson(result1,Map.class);
+                        System.out.println(result1);
+                        System.out.println("Here we go: " + result1);
+                        System.out.println(AttendeeMap.get("attendees"));
+                        if (AttendeeMap.get("attendees")== ""){
+                            {
+                                Attendee.setText("Hosting Event, No Attendees Yet");
+                            }
+                        }
+                        else{
+                          Attendee.setText(AttendeeMap.get("attendees"));}
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            try{
+                t.start();
+                t.join();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Map<String, String> params2 = new HashMap<String, String>();
+            params2.put("attendee", accountInfo.getString("username", ""));
+            final String json1 = new Gson().toJson(params2);
+            Thread t1 = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        //List<Map<String, String>> storedata1;
+                        Type type = new TypeToken<List<Map<String,String>>>(){}.getType();
+                        TextView Attendee1 = (TextView) findViewById(R.id.attendinfo);
+                        //Attendee1.setText("Not Attending Any Events");
+                        String result2= new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json1);
+                        System.out.println(result2);
+                        List<Map<String, String>> AttendeeMap1= new Gson().fromJson(result2,type);
+                        String combine= "";
+                        for(Map<String, String> m : AttendeeMap1) {
+                            combine=m.get("host")+ "\n"+m.get("topic")+"\n"+ m.get("keyword")+"\n"+m.get("time");
+                        }
+                        System.out.println(combine);
+                        if (!combine.equals("")){
+                            Attendee1.setText(combine);}
+                        else {
+                            Attendee1.setText("Not Attending Any Events");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            try{
+                t1.start();
+                t1.join();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
             tapTab2.setImageResource(R.mipmap.tabbar_discover_hl);
             tapTab1.setImageResource(R.mipmap.tabbar_contacts);
             tapTab0.setImageResource(R.mipmap.tabbar_mainframe);
@@ -386,6 +535,40 @@ public class MainContent extends AppCompatActivity implements LocationListener {
                 finish();
             }
         });
+        final Button deletebutton = (Button) findViewById(R.id.eventCancel);
+        deletebutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("delete", accountInfo.getString("temp", ""));
+                final String json = new Gson().toJson(params);
+                System.out.println(json);
+                Thread t= new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/events", json);
+                            System.out.println(result);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                try{
+                    t.start();
+                    t.join();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                contactstart = 2;
+                create_hold = 0;
+                Intent intent = new Intent(MainContent.this, MainContent.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+
        /* AddFriends.setOnClickListener(new Button.OnClickListener()) {
             @Override
             public void onClick(View v) {
@@ -516,7 +699,6 @@ public class MainContent extends AppCompatActivity implements LocationListener {
             Button add;
             Button delete;
         }
-
         /*
          * (non-Javadoc)
          *
@@ -571,7 +753,7 @@ public class MainContent extends AppCompatActivity implements LocationListener {
                     new Thread(new Runnable() {
                         public void run() {
                             try {
-                                String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts", json);
+                                String result = new httpClient().Post("http://ec2-54-201-118-78.us-west-2.compute.amazonaws.com:8080/main_server/contacts",json);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -583,7 +765,7 @@ public class MainContent extends AppCompatActivity implements LocationListener {
                     finish();
                 }
             });
-            acceptButton.setOnClickListener(new View.OnClickListener() {
+            acceptButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     //do something
@@ -593,7 +775,7 @@ public class MainContent extends AppCompatActivity implements LocationListener {
                     // final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
                     username = accountInfo.getString("username", "");
                     System.out.println(username);
-                    params.put("user1", accountInfo.getString("username", ""));// change later rn only for ayoko001
+                    params.put("user1", accountInfo.getString("username",""));// change later rn only for ayoko001
                     params.put("user2", data.get(position).get("id").toString());
                     params.put("status", "accepted");
                     final String json = new Gson().toJson(params);
@@ -623,7 +805,7 @@ public class MainContent extends AppCompatActivity implements LocationListener {
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("user1", accountInfo.getString("username", ""));// change later rn only for ayoko001
+        params.put("user1", accountInfo.getString("username",""));// change later rn only for ayoko001
         final String json = new Gson().toJson(params);
 
         Thread t = new Thread(new Runnable() {
@@ -661,14 +843,12 @@ public class MainContent extends AppCompatActivity implements LocationListener {
         return hashData;
 
     }
-
     public static int count(String s, char c) {
-        return s.length() == 0 ? 0 : (s.charAt(0) == c ? 1 : 0) + count(s.substring(1), c);
+        return s.length()==0 ? 0 : (s.charAt(0)==c ? 1 : 0) + count(s.substring(1),c);
     }
-
-    // creating contacts list from server
 // creating contacts list from server
-    private ArrayList<HashMap<String, Object>> getContactMapData() {
+// creating contacts list from serverata
+    private ArrayList<HashMap<String, Object>> getContactMapData()   {
         contactsData = new ArrayList<HashMap<String, Object>>();
         Map<String, String> params = new HashMap<String, String>();
         final SharedPreferences accountInfo = this.getSharedPreferences("com.jusu.hangout", Context.MODE_PRIVATE);

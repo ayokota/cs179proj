@@ -146,6 +146,7 @@
                   android:screenOrientation="portrait"></activity>
         <activity android:name=".EditEvent"></activity>
         <activity android:name=".CreateEvent"></activity>
+        <activity android:name=".Search"></activity>
 
     </application>
 

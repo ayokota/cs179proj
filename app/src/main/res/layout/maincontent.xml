@@ -380,57 +380,49 @@
                     android:id="@+id/textView4"
                     android:textColor="#ffffff"
                     android:textSize="20sp"
-                    android:layout_below="@+id/searchView"
+                    android:layout_below="@+id/searchbutton"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="5dp" />
+                    android:layout_alignParentStart="true" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cancel"
                     android:id="@+id/eventCancel"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:textSize="12sp"
-                    android:layout_marginRight="5dp"
-                    android:textColor="#ffffff" />
+                    android:layout_alignParentEnd="true" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="    Edit    "
                     android:id="@+id/eventEditButton"
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/eventCancel"
                     android:layout_toStartOf="@+id/eventCancel"
-                    android:onClick="EditEvent"
-                    android:textSize="12sp"
-                    android:textColor="#ffffff" />
+                    android:onClick="EditEvent" />
 
                 <SearchView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/searchView"
+                    android:id="@+id/searchbutton"
                     android:layout_centerHorizontal="true"
                     android:background="#472f2828"
                     android:layout_alignParentTop="true" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="65dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="View"
                     android:id="@+id/ViewUEvent"
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/eventEditButton"
                     android:layout_toStartOf="@+id/eventEditButton"
-                    android:onClick="hostEventView"
-                    android:textSize="12sp"
-                    android:textColor="#ffffff" />
+                    android:onClick="hostEventView" />
 
             </RelativeLayout>
 
@@ -438,7 +430,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="127dp"
                 android:layout_gravity="center_horizontal"
-                android:background="#472f2828"></RelativeLayout>
+                android:background="#472f2828">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/attnlist"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="Not Hosting Any Events" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -447,28 +454,23 @@
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="cancel"
                     android:id="@+id/cancelgo"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:textSize="12sp"
-                    android:layout_marginRight="5dp"
-                    android:textColor="#ffffff" />
+                    android:layout_alignParentEnd="true" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="on/off"
                     android:id="@+id/onoff"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@+id/cancelgo"
-                    android:layout_toStartOf="@+id/cancelgo"
-                    android:textSize="12sp"
-                    android:textColor="#ffffff" />
+                    android:layout_toStartOf="@+id/cancelgo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -479,28 +481,40 @@
                     android:textSize="20sp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="5dp" />
+                    android:layout_alignParentStart="true" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
-                    android:layout_width="65dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="View"
                     android:id="@+id/ViewGoEvent"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@+id/onoff"
                     android:layout_toStartOf="@+id/onoff"
-                    android:onClick="AttendEventView"
-                    android:textSize="12sp"
-                    android:textColor="#ffffff" />
+                    android:onClick="AttendEventView" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:background="#472f2828"></RelativeLayout>
+                android:background="#472f2828">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/attendinfo"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:text="Not Attending Any Events" />
+            </RelativeLayout>
 
             <ListView
                 android:layout_width="wrap_content"
@@ -511,7 +525,7 @@
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create"
             android:id="@+id/button"
@@ -522,10 +536,22 @@
             android:minWidth="0dp"
             android:maxHeight="120dp"
             android:height="44dp"
-            android:onClick="CreateEvent"
-            android:textColor="#ffffff"
-            android:layout_marginRight="5dp"
-            android:textSize="13sp" />
+            android:onClick="CreateEvent" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/search"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:maxHeight="120dp"
+            android:height="44dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="Search" />
 
     </RelativeLayout>
 
